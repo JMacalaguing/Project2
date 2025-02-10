@@ -37,7 +37,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
   const lines = tableTitles[currentIndex].split("\n");
 
   return (
-    <main className="flex-1 container mx-auto px-2 py-8 overflow-x-auto">
+    <main className="flex-1 container mx-auto px-2 py-2 overflow-x-auto">
       <div className="w-full">
         {/* Carousel Title with Chevron Buttons */}
         <div className="flex items-center justify-center mb-1">
@@ -68,7 +68,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
         </h6>
 
         {/* Render the corresponding table */}
-        <div className="mt-8  overflow-x-auto">{tableComponents[currentIndex]}</div>
+        <div className="overflow-x-auto ">{tableComponents[currentIndex]}</div>
       </div>
     </main>
   );

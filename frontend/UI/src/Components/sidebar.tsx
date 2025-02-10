@@ -6,7 +6,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true); // Sidebar state
 
   return (
-    <div className={`h-screen bg-gray-800 text-white transition-all duration-300 ${isOpen ? "w-64" : "w-20"} flex flex-col`}>
+    <div className={`h-screen bg-gray-800 text-white transition-all duration-300 ${isOpen ? "w-40" : "w-15"} flex flex-col`}>
       {/* Logo & Toggle Button */}
       <div className="flex items-center justify-between p-4">
         <span className="text-lg font-bold">{isOpen ? "Dynahcare" : "D"}</span> {/* Logo/Text */}
