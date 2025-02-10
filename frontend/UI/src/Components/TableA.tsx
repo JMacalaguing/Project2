@@ -12,7 +12,7 @@ const TableA: React.FC = () => {
       <div className="w-[4000px] max-w-none"> 
         <div className="grid gap-0 grid-cols-3 text-center border border-black">
           {/* Labels + Editable Fields */}
-          <div className="border border-black text-left pl-1 w-full min-w-[1000px] mt-[-10px] h-37">
+          <div className="border border-black text-left pl-1 w-full min-w-[1000px] mt-[-10px] h-37 ">
             <EditableField label="Department:" value={department} onChange={setDepartment} />
             <EditableField label="Agency:" value={agency} onChange={setAgency} />
             <EditableField label="Operating Unit:" value={operatingUnit} onChange={setOperatingUnit} />
@@ -104,6 +104,15 @@ const TableA: React.FC = () => {
                   <th className="border border-black border-t-0 ">Basic<br/>Salary-<br/>Civilian</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Casual/<br/>Contractual</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Substitute<br/>Teachers</th>
+                  <th className="border border-black border-t-0 ">Personal<br/>Economic<br/>Relief<br/>Allowance<br/>(Pera)</th>
+                  <th className="border border-black border-t-0 ">Representation<br/>Allowance<br/>(RA)</th>
+                  <th className="border border-black border-t-0 ">Clothing/<br/>Uniform<br/>Allowance</th>
+                  <th className="border border-black border-t-0 ">Subsistence<br/>Allowance<br/>(SA)</th>
+                  <th className="border border-black border-t-0 ">Laundry<br/>Allowance<br/>(LA)</th>
+                  <th className="border border-black border-t-0 ">Quaters<br/>Allowance<br/>(QA)</th>
+                  <th className="border border-black border-t-0 ">Honoraria</th>
+                  <th className="border border-black border-t-0 ">Hazard <br/>Pay<br/>(HP)</th>
+                  <th className="border border-black border-t-0 ">Longevity<br/>Pay<br/>(LP)</th>
                 </tr>
               </thead>
               <tbody>

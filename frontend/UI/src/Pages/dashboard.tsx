@@ -1,6 +1,6 @@
 // src/Pages/Dashboard.tsx
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, LayoutDashboardIcon } from "lucide-react";
 import TableA from "../Components/TableA";
 import TableB from "../Components/TableB";
 
@@ -36,7 +36,24 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
   // Split the current title into lines using the newline character
   const lines = tableTitles[currentIndex].split("\n");
 
+  const currentDate = new Date().toLocaleDateString();
+
   return (
+    <div className="min-h-screen w-full overflow-auto">
+      <header className="border-b border-gray-200 px-2 py-4">
+      <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <LayoutDashboardIcon className="h-6 w-6 text-black" />
+            <span className="text-xl font-semibold text-black">Dashboard</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarDays color="black" fill="white" />
+            <span className="font-medium text-black">{currentDate}</span>
+          </div>
+        </div>
+
+      </header>
+    
     <main className="flex-1 container mx-auto px-2 py-2 overflow-x-auto">
       <div className="w-full">
         {/* Carousel Title with Chevron Buttons */}
@@ -71,6 +88,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
         <div className="overflow-x-auto ">{tableComponents[currentIndex]}</div>
       </div>
     </main>
+    </div>
   );
 };
 
