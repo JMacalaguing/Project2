@@ -13,12 +13,12 @@ const TableA: React.FC = () => {
   const renderInputTableCells = (count: number, rowLabel: string, onChange: (row: string, index: number, value: string) => void, values: string[]) => {
     return Array(count).fill(null).map((_, index) => (
       <td key={index} className="border border-black border-t-0 border-b-0">
-      <EditableField 
-        value={values[index] || ""}
-        label="" 
-        onChange={(value) => onChange(rowLabel, index, value)}
-      />
-    </td>
+        <EditableField 
+          value={values?.[index] || ""} 
+          label="" 
+          onChange={(value) => onChange(rowLabel, index, value)}
+        />
+      </td>
     ));
   };
 
@@ -31,7 +31,9 @@ const TableA: React.FC = () => {
   const handleCellChange = (rowLabel: string, index: number, value: string) => {
     setTableData((prevData) => ({
       ...prevData,
-      [rowLabel]: prevData[rowLabel].map((cellValue, i) => (i === index ? value : cellValue))
+      [rowLabel]: prevData[rowLabel] ? 
+        prevData[rowLabel].map((cellValue, i) => (i === index ? value : cellValue)) 
+        : Array(34).fill("").map((_, i) => (i === index ? value : "")) 
     }));
   };
 
@@ -45,6 +47,13 @@ const TableA: React.FC = () => {
       </tr>
     ));
   };
+
+  const renderBlank =()=>{
+    return              <tr className="h-5 border border-t-0 border-b-0">                  
+    {Array(34).fill(null).map((_, index) => (
+        <td key={index} className="border border-black border-t-0 border-b-0"></td>
+      ))}</tr>
+  }
 
 
   return (
@@ -199,10 +208,7 @@ const TableA: React.FC = () => {
                 </td>
                 {renderTableCells(34)}
               </tr>
-              <tr className="h-5 border border-t-0 border-b-0">                  
-                {Array(34).fill(null).map((_, index) => (
-                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
-                  ))}</tr>
+              {renderBlank()}
               <tr className="border border-t-0 border-b-0">
                 <td className="">
                   <div className="ml-6 font-semibold">II. Support to Operators</div>
@@ -211,10 +217,7 @@ const TableA: React.FC = () => {
                 {renderTableCells(34)}
               </tr>
               {renderTableRows()}
-                <tr className="h-5 border border-t-0 border-b-0">                  
-                {Array(34).fill(null).map((_, index) => (
-                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
-                  ))}</tr>
+              {renderBlank()}
                 <tr className="border border-t-0 border-b-0">
                 <td className="">
                   <div className="ml-10 text-sm">a. Project 1</div>
@@ -228,10 +231,7 @@ const TableA: React.FC = () => {
                 </td>
                 {renderTableCells(34)}
               </tr>
-              <tr className="h-5 border border-t-0 border-b-0">                  
-                {Array(34).fill(null).map((_, index) => (
-                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
-                  ))}</tr>
+              {renderBlank()}
               <tr className="border border-t-0 border-b-0">
                 <td className="">
                   <div className="ml-6 font-semibold">III. Operators</div>
@@ -251,10 +251,7 @@ const TableA: React.FC = () => {
                 {renderTableCells(34)}
               </tr>
               {renderTableRows()}
-              <tr className="h-5 border border-t-0 border-b-0">                  
-                {Array(34).fill(null).map((_, index) => (
-                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
-                  ))}</tr>
+              {renderBlank()}
               <tr className="border border-t-0 border-b-0">
                 <td className="">
                   <div className="ml-12 text-sm">Organizanitional Outcome n</div>
@@ -278,6 +275,14 @@ const TableA: React.FC = () => {
                   <div className="ml-10 text-sm">TOTAL A.III</div>
                 </td>
                 {renderTableCells(34)}
+              </tr>
+                {renderBlank()}
+                {renderBlank()}
+              <tr>
+                <td className="border border-t-0 border-b-0 ">
+                  <div className=" text-sm justify-items-start">Grand Total</div>
+                </td>
+                {renderInputTableCells(34, "Grand Total", handleCellChange, tableData["Grand Total"] || [])}
               </tr>
               <tfoot>
                 <tr className="border h-30">
