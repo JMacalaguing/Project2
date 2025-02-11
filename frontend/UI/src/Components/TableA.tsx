@@ -5,6 +5,47 @@ const TableA: React.FC = () => {
   const [department, setDepartment] = useState("");
   const [agency, setAgency] = useState("");
   const [operatingUnit, setOperatingUnit] = useState("");
+  const renderTableCells = (count: number) => {
+    return Array(count).fill(null).map((_, index) => (
+      <td key={index} className="border border-black border-t-0 border-b-0"></td>
+    ));
+  };
+  const renderInputTableCells = (count: number, rowLabel: string, onChange: (row: string, index: number, value: string) => void, values: string[]) => {
+    return Array(count).fill(null).map((_, index) => (
+      <td key={index} className="border border-black border-t-0 border-b-0">
+      <EditableField 
+        value={values[index] || ""}
+        label="" 
+        onChange={(value) => onChange(rowLabel, index, value)}
+      />
+    </td>
+    ));
+  };
+
+  const [tableData, setTableData] = useState<{ [key: string]: string[] }>({
+    "CO": Array(34).fill(""),
+    "RO 1": Array(34).fill(""),
+    "RO 2": Array(34).fill("")
+  });
+  
+  const handleCellChange = (rowLabel: string, index: number, value: string) => {
+    setTableData((prevData) => ({
+      ...prevData,
+      [rowLabel]: prevData[rowLabel].map((cellValue, i) => (i === index ? value : cellValue))
+    }));
+  };
+
+  const renderTableRows = () => {
+    return ["CO", "RO 1", "RO 2"].map((label, rowIndex) => (
+      <tr key={rowIndex} className="">
+        <td className="border border-black border-t-0 border-b-0">
+          <h6 className="ml-17 text-sm">{label}</h6>
+        </td>
+        {renderInputTableCells(34, label, handleCellChange, tableData[label])}
+      </tr>
+    ));
+  };
+
 
   return (
     <main className="w-full overflow-x-auto  mt-2">
@@ -84,17 +125,18 @@ const TableA: React.FC = () => {
                   <th className="border border-black border-t-0 " colSpan={3}>
                     SALARIES AND WAGES
                   </th>
-                  <th className="border border-black border-t-0 " colSpan={16}>
+                  <th className="border border-black border-t-0 " colSpan={18}>
                     OTHER COMPENSATION
                   </th>
                   <th className="border border-black border-t-0 " colSpan={5}>
                     PERSONAL BENEFITS CONTRIBUTIONS
                   </th>
-                  <th className="border border-black border-t-0 " rowSpan={2}>
-                    PERMISSION BENEFITS
+                  <th className="border border-black border-t-0 " colSpan={1}>
                   </th>
-                  <th className="border border-black border-t-0 " colSpan={4}>
+                  <th className="border border-black border-t-0 text-left " colSpan={4}>
                     OTHER PERSONAL BENEFITS
+                  </th>
+                  <th className="border border-black border-t-0 " colSpan={1}>
                   </th>
                   <th className="border border-black border-t-0 " rowSpan={2}>
                     TOTAL
@@ -104,22 +146,204 @@ const TableA: React.FC = () => {
                   <th className="border border-black border-t-0 ">Basic<br/>Salary-<br/>Civilian</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Casual/<br/>Contractual</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Substitute<br/>Teachers</th>
-                  <th className="border border-black border-t-0 ">Personal<br/>Economic<br/>Relief<br/>Allowance<br/>(Pera)</th>
+                  <th className="border border-black border-t-0 ">Personal<br/>Economic<br/>Relief<br/>Allowance<br/>(PERA)</th>
                   <th className="border border-black border-t-0 ">Representation<br/>Allowance<br/>(RA)</th>
+                  <th className="border border-black border-t-0 ">Transportation<br/>Allowance<br/>(TA)</th>
                   <th className="border border-black border-t-0 ">Clothing/<br/>Uniform<br/>Allowance</th>
                   <th className="border border-black border-t-0 ">Subsistence<br/>Allowance<br/>(SA)</th>
                   <th className="border border-black border-t-0 ">Laundry<br/>Allowance<br/>(LA)</th>
                   <th className="border border-black border-t-0 ">Quaters<br/>Allowance<br/>(QA)</th>
+                  <th className="border border-black border-t-0 ">Productivity<br/>Enhancement<br/>Incentive<br/>(PEI)</th>
+                  <th className="border border-black border-t-0 ">Overseas<br/>Allowance<br/>(QA)</th>
                   <th className="border border-black border-t-0 ">Honoraria</th>
                   <th className="border border-black border-t-0 ">Hazard <br/>Pay<br/>(HP)</th>
                   <th className="border border-black border-t-0 ">Longevity<br/>Pay<br/>(LP)</th>
+                  <th className="border border-black border-t-0 ">Overtime<br/>And Night<br/>Pay</th>
+                  <th className="border border-black border-t-0 ">Night Shift <br/>Differential<br/>Pay</th>
+                  <th className="border border-black border-t-0 ">Year<br/>End<br/>Bunos</th>
+                  <th className="border border-black border-t-0 ">Cash<br/>Gift</th>
+                  <th className="border border-black border-t-0 ">Mid<br/>Year<br/>Bunos</th>
+                  <th className="border border-black border-t-0 ">Other<br/>Bunoses<br/>and<br/>Allowances</th>
+                  <th className="border border-black border-t-0 ">Retirement<br/>and life<br/>Issurance<br/>Premiums<br/>(RLIP)</th>
+                  <th className="border border-black border-t-0 ">Pag-ibig<br/>Contributions</th>
+                  <th className="border border-black border-t-0 ">PhilHealth<br/>Contributions</th>
+                  <th className="border border-black border-t-0 ">Employees<br/>Compensation<br/>Insurance<br/>Premiums<br/>(ECIP)</th>
+                  <th className="border border-black border-t-0 ">Provident/<br/>Welfare<br/>Fund<br/>Constributions</th>
+                  <th className="border border-black border-t-0 ">Pension<br/>Benefits</th>
+                  <th className="border border-black border-t-0 ">Retirement<br/>Gratuity</th>
+                  <th className="border border-black border-t-0 ">Terminal<br/>Leaves<br/>Benefits</th>
+                  <th className="border border-black border-t-0 ">Lump-<br/>sums</th>
+                  <th className="border border-black border-t-0 ">Loyalty<br/>Award</th>
+                  <th className="border border-black border-t-0 ">Other<br/>Pernsonal<br/>Benefits</th>
+                </tr>
+                <tr>
+                 {Array(35).fill(null).map((_, index)  => (
+                    <th key={index} className="border border-black border-t-0">
+                      ({index + 1})
+                    </th>
+                  ))}
                 </tr>
               </thead>
-              <tbody>
+              <tr className="border border-black border-t-0 border-b-0">
+                <td className="border border-black border-t-0 border-b-0 text-left ">
+                  <strong className="ml-2">A. COST STRUCTURE</strong>
+                  <div className="ml-6 font-semibold">I. General Administration and Support</div>
+                  <div className="ml-10 text-sm">a. Activity 1</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+              <tr>
+                <td className="border border-t-0 border-b-0 ">
+                  <div className="ml-10 text-sm">TOTAL A.1</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              <tr className="h-5 border border-t-0 border-b-0">                  
+                {Array(34).fill(null).map((_, index) => (
+                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
+                  ))}</tr>
+              <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-6 font-semibold">II. Support to Operators</div>
+                  <div className="ml-10 text-sm">a. Activity 1</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+                <tr className="h-5 border border-t-0 border-b-0">                  
+                {Array(34).fill(null).map((_, index) => (
+                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
+                  ))}</tr>
+                <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-10 text-sm">a. Project 1</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+               {renderTableRows()}
                 <tr>
-                  <td></td>
+                <td className="border border-t-0 border-b-0 ">
+                  <div className="ml-10 text-sm">TOTAL A.II</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              <tr className="h-5 border border-t-0 border-b-0">                  
+                {Array(34).fill(null).map((_, index) => (
+                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
+                  ))}</tr>
+              <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-6 font-semibold">III. Operators</div>
+                  <div className="ml-12 text-sm">Organizanitional Outcome 1</div>
+                  <div className="ml-20 text-sm">PROGRAM 1</div>
+                  <div className="ml-27 text-sm">SUB-PROGRAM 1</div>
+                  <div className="ml-10 text-sm">a. Activity 1</div>
+                  <div></div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+              <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-10 text-sm">a. Project 1</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+              <tr className="h-5 border border-t-0 border-b-0">                  
+                {Array(34).fill(null).map((_, index) => (
+                    <td key={index} className="border border-black border-t-0 border-b-0"></td>
+                  ))}</tr>
+              <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-12 text-sm">Organizanitional Outcome n</div>
+                  <div className="ml-20 text-sm">PROGRAM n</div>
+                  <div className="ml-27 text-sm">SUB-PROGRAM n</div>
+                  <div className="ml-10 text-sm">a. Activity n</div>
+                  <div></div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+              <tr className="border border-t-0 border-b-0">
+                <td className="">
+                  <div className="ml-10 text-sm">a. Project n</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              {renderTableRows()}
+              <tr>
+                <td className="border border-t-0 border-b-0 ">
+                  <div className="ml-10 text-sm">TOTAL A.III</div>
+                </td>
+                {renderTableCells(34)}
+              </tr>
+              <tfoot>
+                <tr className="border h-30">
+                  <td className="border text-[12px]"colSpan={7}>
+                    <div className="font-bold ml-2 text-[14px]">PREPARED BY:</div>
+                    <div className="flex justify-center space-x-20">
+                      <div className="flex flex-col items-center">
+                        <input
+                          type="text"
+                          placeholder=""
+                          className="w-80 border-b border-black focus:outline-none text-center"
+                        />
+                        <div className="mt-1 font-bold">BUDGET OFFICER</div>
+                      </div>
+                      
+                      <div className="flex flex-col items-center">
+                        <input
+                          type="text"
+                          placeholder=""
+                          className="w-80 border-b border-black focus:outline-none text-center"
+                        />
+                        <div className="mt-1 font-bold">PLANNIG OFFICER</div>
+                      </div>
+                    </div>
+                    </td>
+                  <td className="border text-[12px]"colSpan={8}>
+                  <div className="font-bold ml-2 text-[14px]">CERTIFIED CORRECT</div>
+                    <div className="flex justify-center space-x-20">
+                      <div className="flex flex-col items-center">
+                        <input
+                          type="text"
+                          placeholder=""
+                          className="w-80 border-b border-black focus:outline-none text-center"
+                        />
+                        <div className="mt-1 font-bold">CHIEF ACCOUNTANT</div>
+                      </div>
+                      </div>
+                  </td>
+                  <td className="border text-[12px]"colSpan={9}>                  
+                   <div className="font-bold ml-2 text-[14px]">APPROVED</div>
+                    <div className="flex justify-center space-x-20">
+                      <div className="flex flex-col items-center">
+                        <input
+                          type="text"
+                          placeholder=""
+                          className="w-80 border-b border-black focus:outline-none text-center"
+                        />
+                        <div className="mt-1 font-bold">HEAD OF OFFICE/AGENCY</div>
+                      </div>
+                      </div>
+                    </td>
+                  <td className="border text-[12px]"colSpan={11}>                  
+                   <div className="font-bold ml-2 text-[14px]">DATE</div>
+                    <div className="flex justify-items-start ml-50">
+                      <div className="flex flex-col items-start">
+                        <input
+                          type="text"
+                          placeholder=""
+                          className="w-50 border-b border-black focus:outline-none text-center"
+                        />
+                        <div className="mt-1 font-bold">DAY/MONTH/YEAR</div>
+                      </div>
+                      </div>
+                    </td>
                 </tr>
-              </tbody>
+              </tfoot>
             </table>
           </div>
       </div>
