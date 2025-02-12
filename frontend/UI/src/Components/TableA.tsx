@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import EditableField from "./EditableField";
+import { useTable } from "../Context/TableContext";
+
 
 const TableA: React.FC = () => {
   const [department, setDepartment] = useState("");
   const [agency, setAgency] = useState("");
   const [operatingUnit, setOperatingUnit] = useState("");
+
+  const { tableRef } = useTable();
+
   const renderTableCells = (count: number) => {
     return Array(count).fill(null).map((_, index) => (
       <td key={index} className="border border-black border-t-0 border-b-0"></td>
@@ -50,70 +55,72 @@ const TableA: React.FC = () => {
 
   const renderBlank =()=>{
     return              <tr className="h-5 border border-t-0 border-b-0">                  
-    {Array(34).fill(null).map((_, index) => (
+    {Array(35).fill(null).map((_, index) => (
         <td key={index} className="border border-black border-t-0 border-b-0"></td>
       ))}</tr>
   }
 
 
+
+  
   return (
     <main className="w-full overflow-x-auto  mt-2">
       {/* Table Wrapper - Forces full width */}
-      <div className="w-[4000px] max-w-none"> 
+      <div ref={tableRef} className="w-[4000px] max-w-none"> 
         <div className="grid gap-0 grid-cols-3 text-center border border-black">
           {/* Labels + Editable Fields */}
-          <div className="border border-black text-left pl-1 w-full min-w-[1000px] mt-[-10px] h-37 ">
+          <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
             <EditableField label="Department:" value={department} onChange={setDepartment} />
             <EditableField label="Agency:" value={agency} onChange={setAgency} />
             <EditableField label="Operating Unit:" value={operatingUnit} onChange={setOperatingUnit} />
           </div>
 
           {/* Empty Middle Cell */}
-          <div className="border border-black w-full min-w-[1000px] text-left ">
+          <div className="border border-black w-full min-w-[1000px] text-left p-4">
             <div className="ml-20 text-[12px] font-bold">    
-                <div>PPROPRIATION SOURCE (Please check)</div>
+                <div className="mb-2">PPROPRIATION SOURCE (Please check)</div>
                   <div className="flex item-center">
                     <input type="checkbox" id="new-approriation" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="new-approriation">New Approriation (Regular Agency Badget)</label>
+                    <label htmlFor="new-approriation" className="mt-[-6px]">New Approriation (Regular Agency Badget)</label>
                   </div> 
                 <div className="flex item-center">
                     <input type="checkbox" id="auto-appropriations"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="auto-approriation">Automatic Appropriations</label>
+                    <label htmlFor="auto-approriation" className="mt-[-6px]">Automatic Appropriations</label>
                   </div>
                 <div className="flex item-center">
                     <input type="checkbox" id="continuing-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
-                    <label htmlFor="auto-approriation">Continuing Appropriations</label>
+                    <label htmlFor="auto-approriation" className="mt-[-6px]">Continuing Appropriations</label>
                   </div>
                 <div className="flex item-center">
                     <input type="checkbox" id="other-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="other-approriation">Others(New Appropriations Transfers from  SPFs; Supplemental)</label>
+                    <label htmlFor="other-approriation" className="mt-[-6px]">Others(New Appropriations Transfers from  SPFs; Supplemental)</label>
                   </div>
              </div>
           </div>
 
           {/* Empty Right Cell */}
-          <div className="border border-black w-full min-w-[1000px] text-left">
+          <div className="border border-black w-full min-w-[1000px] text-left p-4">
           <div className="ml-20 text-[12px] font-bold">    
-                <div className="ml-1">YEAR(Please check):</div>
+                <div className="ml-1 mb-2">YEAR(Please check):</div>
                   <div className="flex item-center">
                     <input type="checkbox" id="2023-actual" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
-                    <label htmlFor="2023-actual">2023-Actual Obligation</label>
+                    <label htmlFor="2023-actual" className="mt-[-6px]">2023-Actual Obligation</label>
                   </div> 
                 <div className="flex item-center">
                     <input type="checkbox" id="2024-Current"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="2024-Current">2024-Current Progress</label>
+                    <label htmlFor="2024-Current" className="mt-[-6px]">2024-Current Progress</label>
                   </div>
-                <div className="flex item-center">
+                <div className="flex item-center mb-2">
                     <input type="checkbox" id="continuing-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
-                    <label htmlFor="auto-approriation">2025-Total Proposal Program</label>
+                    <label htmlFor="auto-approriation" className="mt-[-6px]">2025-Total Proposal Program</label>
                   </div>
                 <div className="flex item-center ml-20">
                     <input type="checkbox" id="TIER1" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="TIER1">TIER1</label>
+                    <label htmlFor="TIER1" className="mt-[-6px]">TIER1</label>
                   </div>
                 <div className="flex item-center ml-20">
                     <input type="checkbox" id="TIER2" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
-                    <label htmlFor="TIER2">TIER2</label>
+                    <label htmlFor="TIER2" className="mt-[-6px]">TIER2</label>
                   </div>
              </div>
           </div>
@@ -122,40 +129,40 @@ const TableA: React.FC = () => {
         <div className="overflow-auto shadow-lg rounded-lg">
             <table className="min-w-full border-collapse">
               <thead>
-                <tr>
-                  <th className="border border-black border-t-0 " rowSpan={2}>
-                    COST STRUCTURES<br />
-                    PROGRAM<br />
-                    Activity<br />
-                    Project
-                  </th>
-                  <th className="border border-black border-t-0 " rowSpan={2}>UACS<br/>
-                  Code(s)</th>
-                  <th className="border border-black border-t-0 " colSpan={3}>
-                    SALARIES AND WAGES
-                  </th>
-                  <th className="border border-black border-t-0 " colSpan={18}>
-                    OTHER COMPENSATION
-                  </th>
-                  <th className="border border-black border-t-0 " colSpan={5}>
-                    PERSONAL BENEFITS CONTRIBUTIONS
-                  </th>
-                  <th className="border border-black border-t-0 " colSpan={1}>
-                  </th>
-                  <th className="border border-black border-t-0 text-left " colSpan={4}>
-                    OTHER PERSONAL BENEFITS
-                  </th>
-                  <th className="border border-black border-t-0 " colSpan={1}>
-                  </th>
-                  <th className="border border-black border-t-0 " rowSpan={2}>
-                    TOTAL
-                  </th>
-                </tr>
+              <tr > 
+                <th className="border border-black border-t-0" rowSpan={2}>
+                  COST STRUCTURES<br />
+                  PROGRAM<br />
+                  Activity<br />
+                  Project
+                </th>
+                <th className="border border-black border-t-0" rowSpan={2}>
+                  UACS<br/> Code(s)
+                </th>
+                <th className="border border-black border-t-0 p-2" colSpan={3}>
+                  SALARIES AND WAGES
+                </th>
+                <th className="border border-black border-t-0 p-2" colSpan={18}>
+                  OTHER COMPENSATION
+                </th>
+                <th className="border border-black border-t-0 p-2" colSpan={5}>
+                  PERSONAL BENEFITS CONTRIBUTIONS
+                </th>
+                <th className="border border-black border-t-0 p-2" colSpan={1}></th>
+                <th className="border border-black border-t-0 text-left p-2" colSpan={4}>
+                  OTHER PERSONAL BENEFITS
+                </th>
+                <th className="border border-black border-t-0 p-2" colSpan={1}></th>
+                <th className="border border-black border-t-0 text-center p-2" rowSpan={2}>
+                  TOTAL
+                </th>
+              </tr>
+
                 <tr>
                   <th className="border border-black border-t-0 ">Basic<br/>Salary-<br/>Civilian</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Casual/<br/>Contractual</th>
                   <th className="border border-black border-t-0 ">Salaries &<br/>Wages-<br/>Substitute<br/>Teachers</th>
-                  <th className="border border-black border-t-0 ">Personal<br/>Economic<br/>Relief<br/>Allowance<br/>(PERA)</th>
+                  <th className="border border-black border-t-0 p-2">Personal<br/>Economic<br/>Relief<br/>Allowance<br/>(PERA)</th>
                   <th className="border border-black border-t-0 ">Representation<br/>Allowance<br/>(RA)</th>
                   <th className="border border-black border-t-0 ">Transportation<br/>Allowance<br/>(TA)</th>
                   <th className="border border-black border-t-0 ">Clothing/<br/>Uniform<br/>Allowance</th>
@@ -187,12 +194,13 @@ const TableA: React.FC = () => {
                 </tr>
                 <tr>
                  {Array(35).fill(null).map((_, index)  => (
-                    <th key={index} className="border border-black border-t-0">
+                    <th key={index} className="border border-black border-t-0 p-2">
                       ({index + 1})
                     </th>
                   ))}
                 </tr>
               </thead>
+              <tbody>
               <tr className="border border-black border-t-0 border-b-0">
                 <td className="border border-black border-t-0 border-b-0 text-left ">
                   <strong className="ml-2">A. COST STRUCTURE</strong>
@@ -210,7 +218,7 @@ const TableA: React.FC = () => {
               </tr>
               {renderBlank()}
               <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-6 font-semibold">II. Support to Operators</div>
                   <div className="ml-10 text-sm">a. Activity 1</div>
                 </td>
@@ -219,7 +227,7 @@ const TableA: React.FC = () => {
               {renderTableRows()}
               {renderBlank()}
                 <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-10 text-sm">a. Project 1</div>
                 </td>
                 {renderTableCells(34)}
@@ -233,7 +241,7 @@ const TableA: React.FC = () => {
               </tr>
               {renderBlank()}
               <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-6 font-semibold">III. Operators</div>
                   <div className="ml-12 text-sm">Organizanitional Outcome 1</div>
                   <div className="ml-20 text-sm">PROGRAM 1</div>
@@ -245,7 +253,7 @@ const TableA: React.FC = () => {
               </tr>
               {renderTableRows()}
               <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-10 text-sm">a. Project 1</div>
                 </td>
                 {renderTableCells(34)}
@@ -253,7 +261,7 @@ const TableA: React.FC = () => {
               {renderTableRows()}
               {renderBlank()}
               <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-12 text-sm">Organizanitional Outcome n</div>
                   <div className="ml-20 text-sm">PROGRAM n</div>
                   <div className="ml-27 text-sm">SUB-PROGRAM n</div>
@@ -264,7 +272,7 @@ const TableA: React.FC = () => {
               </tr>
               {renderTableRows()}
               <tr className="border border-t-0 border-b-0">
-                <td className="">
+                <td className="border border-black border-t-0 border-b-0">
                   <div className="ml-10 text-sm">a. Project n</div>
                 </td>
                 {renderTableCells(34)}
@@ -284,6 +292,7 @@ const TableA: React.FC = () => {
                 </td>
                 {renderInputTableCells(34, "Grand Total", handleCellChange, tableData["Grand Total"] || [])}
               </tr>
+              </tbody>
               <tfoot>
                 <tr className="border h-30">
                   <td className="border text-[12px]"colSpan={7}>

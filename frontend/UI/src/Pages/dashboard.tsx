@@ -1,4 +1,3 @@
-// src/Pages/Dashboard.tsx
 import React, { useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight, LayoutDashboardIcon } from "lucide-react";
 import TableA from "../Components/TableA";
@@ -44,7 +43,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
       <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <LayoutDashboardIcon className="h-6 w-6 text-black" />
-            <span className="text-xl font-semibold text-black">Dashboard</span>
+            <span className="text-xl font-semibold text-black">Form</span>
           </div>
           <div className="flex items-center gap-2">
             <CalendarDays color="black" fill="white" />
@@ -60,7 +59,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
         <div className="flex items-center justify-center mb-1">
           {/* Left Chevron Button */}
           <button onClick={handlePrev} className="mr-4">
-            <ChevronLeft size={30} />
+            <ChevronLeft size={50} />
           </button>
 
           {/* Title Text */}
@@ -75,7 +74,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
 
           {/* Right Chevron Button */}
           <button onClick={handleNext} className="ml-4">
-            <ChevronRight size={30} />
+            <ChevronRight size={50} />
           </button>
         </div>
 
