@@ -1,0 +1,52 @@
+
+html{
+  overflow: hidden;
+}
+.top-bar {
+    background: #ffff;
+    width: calc(100% - 200px);
+    position: fixed;
+    top: 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.main-container{
+    margin-top: 200px;
+    margin-left: 70px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.form-cell{
+    width: 100%;
+    margin: 0;
+    border: solid 2px transparent;
+    border-radius: 0;
+}
+
+.form-cell:hover{
+    border-color: gray;
+}
+
+.form-header {
+    position: fixed;
+    padding: 5px;
+    background: #ffffff;
+    top: 60px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}   
+
+.form-header,
+.main-container{
+    width: calc(100% - 200px);
+}
+
+.form-container{
+    width:100%;
+    max-width: 100%;
+}
+
+.form-container > div {
+    overflow: auto;
+    width: -webkit-fill-available;
+    height: calc(100vh - 210px);
+    max-width: 100%;
+}

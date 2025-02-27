@@ -14,7 +14,7 @@ const EditableField: React.FC<EditableFieldProps> = ({ label, value, onChange })
         contentEditable
         suppressContentEditableWarning
         onBlur={(e) => onChange(e.target.innerText)}
-        className="ml-2 p-1 rounded cursor-text border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="form-cell"
       >
         {value}
       </span>
