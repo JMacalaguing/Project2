@@ -13,6 +13,11 @@ const Sidebar: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
 
+  const HandleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  }
+
   // Handle PDF export with loading state and checkmark display
   const handleExport = async () => {
     setIsExporting(true);
@@ -75,7 +80,8 @@ const Sidebar: React.FC = () => {
           </button>
         </li>
         <li className="hover:bg-blue-900 p-4">
-          <button className="hover:white-gray-400 flex items-center space-x-2 ">
+          <button onClick={HandleLogout} className="hover:white-gray-400 flex items-center space-x-2 ">
+            
             <LogoutIcon/>
             {isOpen && <span>Logout</span>}
             </button>

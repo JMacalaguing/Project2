@@ -22,7 +22,7 @@ const LoginPage = () => {
             </div>
             <div className="flex-1 flex items-center justify-center p-6">
               <div className=" p-8 rounded-lg shadow-lg w-96 ">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">BP FORM</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">National Budget Form</h2>
                 <form onSubmit={handleSubmit}>
                 <div className="flex justify-center">
                     <div className="text-center">
