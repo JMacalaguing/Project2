@@ -8,7 +8,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { tableRef } = useTable();
   const [isExporting, setIsExporting] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
 
       <ul className="flex-grow">
         <li className="hover:bg-blue-900 p-4">
-          <Link to="/" className="hover:text-gray-400 flex items-center space-x-2">
+          <Link to="/dashboard" className="hover:text-gray-400 flex items-center space-x-2">
             <LayoutDashboard size={24} />
             {isOpen && <span>Form</span>}
           </Link>

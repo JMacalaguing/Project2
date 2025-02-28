@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight, LayoutDashboardIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight,} from "lucide-react";
 import TableA from "../Components/TableA";
 import TableB from "../Components/TableB";
 import Header from "../Components/header";
+
 
 const Dashboard: React.FC = () => {
   // Define an array of table titles

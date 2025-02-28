@@ -91,7 +91,17 @@ const TableA: React.FC = () => {
           <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
             <EditableField label="Department:" value={department} onChange={setDepartment} />
             <EditableField label="Agency:" value={agency} onChange={setAgency} />
-            <EditableField label="Operating Unit:" value={operatingUnit} onChange={setOperatingUnit} />
+            <div className="h-10 flex items-center">
+              <span className="font-medium">Operating Unit:</span>
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => setOperatingUnit(e.target.innerText)}
+                className="form-cell2"
+              >
+                {operatingUnit}
+            </span>
+           </div>
           </div>
 
           {/* Empty Middle Cell */}
@@ -482,7 +492,7 @@ const TableA: React.FC = () => {
                         <input
                           type="text"
                           placeholder=""
-                          className="w-80 border-b border-black focus:outline-none text-center"
+                          className="w-80 border-b border-black focus:outline-none text-center h-6"
                         />
                         <div className="mt-1 font-bold">PLANNIG OFFICER</div>
                       </div>
