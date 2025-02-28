@@ -11,7 +11,8 @@ function App() {
 
   return (
     <TableProvider>
-      <div className="flex h-screen bg-white">
+      <div className="flex h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/bg.svg')" }} >
         {location.pathname !== "/" && location.pathname !== "/sign-up" && <Sidebar />}
         <Routes>
           <Route path="/sign-up" element={<SignupPage />} />

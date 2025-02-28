@@ -38,7 +38,7 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
   const lines = tableTitles[currentIndex].split("\n");
 
   return (
-    <div className="main-container min-h-screen w-full">
+    <div className="main-container min-h-screen w-full bg-white ">
      <Header/>
 
       {/* Carousel Title with Chevron Buttons */}
