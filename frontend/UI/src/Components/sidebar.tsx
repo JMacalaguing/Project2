@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import { ChevronLeft, ChevronRight, LayoutDashboard, Loader2, Check } from "lucide-react";
 import { useTable } from "../Context/TableContext";
 import { exportToPDF } from "./exportToPDF";
@@ -12,25 +12,23 @@ const Sidebar: React.FC = () => {
   const { tableRef } = useTable();
   const [isExporting, setIsExporting] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
+  
+  const location = useLocation(); // Get the current path
 
   const HandleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   }
 
-  // Handle PDF export with loading state and checkmark display
   const handleExport = async () => {
     setIsExporting(true);
-    setShowCheck(false); // Ensure checkmark is reset before exporting
-    console.log("Export started...");
+    setShowCheck(false);
 
     await exportToPDF(tableRef);
 
-    console.log("Export completed.");
     setIsExporting(false);
-    setShowCheck(true); // Show checkmark
+    setShowCheck(true);
 
-    // Revert back to the download icon after 2 seconds
     setTimeout(() => {
       setShowCheck(false);
     }, 3000);
@@ -50,21 +48,21 @@ const Sidebar: React.FC = () => {
       </div>
 
       <ul className="flex-grow">
-        <li className="hover:bg-blue-900 p-4">
-          <Link to="/dashboard" className="hover:text-gray-400 flex items-center space-x-2">
+        <li className={`p-4 ${location.pathname === "/dashboard" ? "bg-" : "hover:bg-blue-900"}`}>
+          <Link to="/dashboard" className="flex items-center space-x-2">
             <LayoutDashboard size={24} />
             {isOpen && <span>Form</span>}
           </Link>
         </li>
         <li className="hover:bg-blue-900 p-4">
           <button className="hover:text-gray-400 flex items-center space-x-2">
-            <SaveAltIcon/>{isOpen && <span>Save</span>}
+            <SaveAltIcon />{isOpen && <span>Save</span>}
           </button>
         </li>
         <li className="hover:bg-blue-900 p-4">
           <button
             onClick={handleExport}
-            className={`hover:white-gray-400 flex items-center space-x-2 ${
+            className={`hover:text-gray-400 flex items-center space-x-2 ${
               isExporting ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={isExporting}
@@ -74,17 +72,16 @@ const Sidebar: React.FC = () => {
             ) : showCheck ? (
               <Check className="text-green-500" size={24} />
             ) : (
-              <PictureAsPdfIcon/>
+              <PictureAsPdfIcon />
             )}
             {isOpen && <span>{isExporting ? "Exporting..." : showCheck ? "Exported!" : "PDF"}</span>}
           </button>
         </li>
         <li className="hover:bg-blue-900 p-4">
-          <button onClick={HandleLogout} className="hover:white-gray-400 flex items-center space-x-2 ">
-            
-            <LogoutIcon/>
+          <button onClick={HandleLogout} className="hover:text-gray-400 flex items-center space-x-2">
+            <LogoutIcon />
             {isOpen && <span>Logout</span>}
-            </button>
+          </button>
         </li>
       </ul>
     </div>
