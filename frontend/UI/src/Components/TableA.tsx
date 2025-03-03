@@ -32,16 +32,38 @@ const TableA: React.FC = () => {
     "gen_ad_support_activity1_CO": Array(34).fill(""),
     "gen_ad_support_activity1_RO1_": Array(34).fill(""),
     "gen_ad_support_activity1_RO2_": Array(34).fill(""),
+    
     "total_AI_": Array(34).fill(""),
+
     "su_to_support_activity1_CO": Array(34).fill(""),
     "su_to_support_activity1_RO1_": Array(34).fill(""),
     "su_to_support_activity1_RO2_": Array(34).fill(""),
+
     "su_to_support_project1_CO": Array(34).fill(""),
     "su_to_support_project1_RO1_": Array(34).fill(""),
     "su_to_support_project1_RO2_":Array(34).fill(""),
     "total_AII_": Array(34).fill(""),
-    "org_sub_prog_act1_CO":Array(34).fill(""),
 
+    "org_sub_prog_act1_CO":Array(34).fill(""),
+    "org_sub_prog_act1_RO1_":Array(34).fill(""),
+    "org_sub_prog_act1_RO2_":Array(34).fill(""),
+
+    "org_sub_prog_pro1_CO":Array(34).fill(""),
+    "org_sub_prog_pro1_RO1_":Array(34).fill(""),
+    "org_sub_prog_pro1_RO2_":Array(34).fill(""),
+
+    "org_sub_prog_n_act1_CO": Array(34).fill(""),
+    "org_sub_prog_n_act1_RO1_": Array(34).fill(""),
+    "org_sub_prog_n_act1_RO2_": Array(34).fill(""),
+    
+    "org_sub_prog_n_pro1_CO": Array(34).fill(""),
+    "org_sub_prog_n_pro1_RO1_": Array(34).fill(""),
+    "org_sub_prog_n_pro1_RO2_": Array(34).fill(""),
+
+    "total_AIII_": Array(34).fill(""),
+
+    "grand_total": Array(34).fill(""),
+    
   });
   
   const handleCellChange = (rowLabel: string, index: number, value: string) => {
@@ -347,7 +369,7 @@ const TableA: React.FC = () => {
               {renderBlank()}
                 <tr className="border border-t-0 border-b-0">
                 <td className="border border-black border-t-0 border-b-0">
-                  <div className="ml-10 text-sm">a. Project 1</div>
+                  <div className="ml-10 text-sm">b. Project 1</div>
                 </td>
                 {renderTableCells(34)}
               </tr>
@@ -421,7 +443,7 @@ const TableA: React.FC = () => {
               </tr>
               <tr>
                 <td className="border border-black border-t-0 border-b-0 ">
-                  <div className="ml-10 text-sm">CO</div> 
+                  <div className="ml-17 text-sm">CO</div> 
                 </td>
                 {Array(34).fill(null).map((_, index) => (
                   <td key={index} className="border border-black border-t-0 border-b-0 ">
@@ -433,13 +455,82 @@ const TableA: React.FC = () => {
                   </td>
                 ))}
               </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 1</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_act1_RO1_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_act1_RO1_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 2</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_act1_RO2_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_act1_RO2_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
               <tr className="border border-t-0 border-b-0">
                 <td className="border border-black border-t-0 border-b-0">
-                  <div className="ml-10 text-sm">a. Project 1</div>
+                  <div className="ml-10 text-sm">b. Project 1</div>
                 </td>
                 {renderTableCells(34)}
               </tr>
-              {renderTableRows()}
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">CO</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_pro1_CO"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_pro1_CO", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 1</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_pro1_RO1_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_pro1_RO1_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 2</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_pro1_RO2_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_pro1_RO2_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
               {renderBlank()}
               <tr className="border border-t-0 border-b-0">
                 <td className="border border-black border-t-0 border-b-0">
@@ -451,19 +542,109 @@ const TableA: React.FC = () => {
                 </td>
                 {renderTableCells(34)}
               </tr>
-              {renderTableRows()}
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">CO</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_act1_CO"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_act1_CO", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 1</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_act1_RO1_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_act1_RO1_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 2</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_act1_RO2_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_act1_RO2_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
               <tr className="border border-t-0 border-b-0">
                 <td className="border border-black border-t-0 border-b-0">
-                  <div className="ml-10 text-sm">a. Project n</div>
+                  <div className="ml-10 text-sm">b. Project n</div>
                 </td>
                 {renderTableCells(34)}
               </tr>
-              {renderTableRows()}
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">CO</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_pro1_CO"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_pro1_CO", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 1</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_pro1_RO1_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_pro1_RO1_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="border border-black border-t-0 border-b-0 ">
+                  <div className="ml-17 text-sm">RO 2</div> 
+                </td>
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["org_sub_prog_n_pro1_RO2_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("org_sub_prog_n_pro1_RO2_", index, value)}
+                    />
+                  </td>
+                ))}
+              </tr>
               <tr>
                 <td className="border border-t-0 border-b-0 ">
                   <div className="ml-10 text-sm">TOTAL A.III</div>
                 </td>
-                {renderTableCells(34)}
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["total_AIII_"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("total_AIII_", index, value)}
+                    />
+                  </td>
+                ))}
               </tr>
                 {renderBlank()}
                 {renderBlank()}
@@ -471,7 +652,15 @@ const TableA: React.FC = () => {
                 <td className="border border-t-0 border-b-0 ">
                   <div className=" text-sm justify-items-start">Grand Total</div>
                 </td>
-                {renderInputTableCells(34, "Grand Total", handleCellChange, tableData["Grand Total"] || [])}
+                {Array(34).fill(null).map((_, index) => (
+                  <td key={index} className="border border-black border-t-0 border-b-0 ">
+                    <EditableField
+                      value={tableData["grand_total"][index] || ""}
+                      label=""
+                      onChange={(value) => handleCellChange2("grand_total", index, value)}
+                    />
+                  </td>
+                ))}
               </tr>
               </tbody>
               <tfoot>
@@ -481,6 +670,7 @@ const TableA: React.FC = () => {
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
                         <input
+                          id="budget-officer"
                           type="text"
                           placeholder=""
                           className="w-80 border-b border-black focus:outline-none text-center"
@@ -490,6 +680,7 @@ const TableA: React.FC = () => {
                       
                       <div className="flex flex-col items-center">
                         <input
+                          id="planning-officer"
                           type="text"
                           placeholder=""
                           className="w-80 border-b border-black focus:outline-none text-center h-6"
@@ -503,6 +694,7 @@ const TableA: React.FC = () => {
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
                         <input
+                          id="chief-accountant"
                           type="text"
                           placeholder=""
                           className="w-80 border-b border-black focus:outline-none text-center"
@@ -516,6 +708,7 @@ const TableA: React.FC = () => {
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
                         <input
+                          id="head-of-office"
                           type="text"
                           placeholder=""
                           className="w-80 border-b border-black focus:outline-none text-center"
@@ -529,6 +722,7 @@ const TableA: React.FC = () => {
                     <div className="flex justify-items-start ml-50">
                       <div className="flex flex-col items-start">
                         <input
+                          id="date"
                           type="text"
                           placeholder=""
                           className="w-50 border-b border-black focus:outline-none text-center"

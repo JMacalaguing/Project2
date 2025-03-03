@@ -1,14 +1,30 @@
+import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import LockIcon from "@mui/icons-material/Lock";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    navigate("/dashboard");
+    setError("");
+  
+    try {
+      const { data } = await axios.post("http://127.0.0.1:8000/api/login/", { email, password });
+  
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user)); 
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message || "Something went wrong. Please try again.");
+    }
   };
+  
 
   return (
     <div
@@ -17,9 +33,7 @@ const LoginPage = () => {
     >
       <div className="flex h-[500px] w-[800px] bg-white/80 shadow-lg rounded-3xl backdrop-blur-md">
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <img src="/login.svg" alt="Welcome Illustration" className="w-100 h-100 mx-auto" />
-          </div>
+          <img src="/login.svg" alt="Welcome Illustration" className="w-100 h-100 mx-auto" />
         </div>
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="p-8 rounded-lg shadow-lg w-96 bg-white/80">
@@ -29,13 +43,30 @@ const LoginPage = () => {
                 <div className="text-center">
                   <div className="flex bg-white w-full p-4 mb-4 rounded-b-md shadow-2xl">
                     <AttachEmailIcon className="text-gray-900 mr-2" />
-                    <input type="email" placeholder="Email" className="focus:outline-none w-full" />
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="focus:outline-none w-full"
+                      required
+                    />
                   </div>
 
                   <div className="flex bg-white w-full p-4 mb-4 rounded-b-md shadow-2xl">
                     <LockIcon className="text-gray-900 mr-2" />
-                    <input type="password" placeholder="Password" className="focus:outline-none w-full" />
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="focus:outline-none w-full"
+                      required
+                    />
                   </div>
+
+                  {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+
                   <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded hover:bg-white hover:text-gray-900">
                     SIGN IN
                   </button>
