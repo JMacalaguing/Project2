@@ -1,9 +1,21 @@
-import html2canvas from 'html2canvas-pro';
+import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 
 export const exportToPDF = (tableRef: React.RefObject<HTMLDivElement | null>): Promise<void> => {
   return new Promise((resolve) => {
     if (!tableRef.current) return resolve();
+
+    // Get the table title from the `data-title` attribute
+    const tableType = tableRef.current.getAttribute("data-title") || "A";
+
+    // Define an array of table titles
+    const tableTitles = [
+      `BP FORM 201 - SCHEDULE A\nOBLIGATIONS, BY OBJECT OF EXPENDITURES\nPERSONNEL SERVICES`,
+      `BP FORM 201 - SCHEDULE B\nOBLIGATIONS, BY OBJECT OF EXPENDITURES\nMAINTENANCE AND OTHER OPERATING EXPENSES`,
+    ];
+
+    // Select the title based on table type
+    const titleText = tableType === "B" ? tableTitles[1] : tableTitles[0];
 
     const elementsToHide = tableRef.current.querySelectorAll(".border-t-0");
     elementsToHide.forEach((el) => ((el as HTMLElement).style.borderTop = "none"));
@@ -26,16 +38,13 @@ export const exportToPDF = (tableRef: React.RefObject<HTMLDivElement | null>): P
         format: [pdfWidth, pdfHeight],
       });
 
-      const titleArray = [
-        "BFORM 2001-SCHEDULE A",
-        "OBLIGATIONS, BY OBJECT OF EXPENDITURES",
-        "PERSONNEL SERVICES",
-      ];
+      // Split titleText into multiple lines based on newlines (\n)
+      const titleArray = titleText.split("\n");
+
       const smallText = "(In Thousand Pesos)";
 
       let startY = 10;
       let lineSpacing = 5;
-      let smallTextSpacing = 0;
 
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(12);
@@ -49,18 +58,18 @@ export const exportToPDF = (tableRef: React.RefObject<HTMLDivElement | null>): P
       pdf.setFontSize(9);
       const smallTextWidth = pdf.getTextWidth(smallText);
       const smallTextX = (pdfWidth - smallTextWidth) / 2;
-      const smallTextY = startY + titleArray.length * lineSpacing + smallTextSpacing;
+      const smallTextY = startY + titleArray.length * lineSpacing;
       pdf.text(smallText, smallTextX, smallTextY);
 
-      const fileName = titleArray.join(" ").replace(/\s+/g, " ") + ".pdf";
+      const fileName = `BP_FORM_201_${titleText}.pdf`;
 
       const tableY = smallTextY + 10;
       pdf.addImage(imgData, "PNG", 10, tableY, imgWidth, imgHeight);
 
       pdf.save(fileName);
       elementsToHide.forEach((el) => ((el as HTMLElement).style.borderTop = ""));
-      
-      resolve(); // This ensures the function returns when PDF export is done
+
+      resolve();
     });
   });
 };

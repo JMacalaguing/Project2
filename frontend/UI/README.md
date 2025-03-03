@@ -24,6 +24,8 @@ Npm list:
 
 ├── @vitejs/plugin-react@4.3.4
 
+├── axios@1.8.1
+
 ├── dom-to-image-more@3.5.0
 
 ├── eslint-plugin-react-hooks@5.1.0

@@ -7,7 +7,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { yellow } from "@mui/material/colors";
+
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();

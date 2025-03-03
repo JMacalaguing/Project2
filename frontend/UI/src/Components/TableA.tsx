@@ -16,17 +16,6 @@ const TableA: React.FC = () => {
       <td key={index} className="border border-black border-t-0 border-b-0"></td>
     ));
   };
-  const renderInputTableCells = (count: number, rowLabel: string, onChange: (row: string, index: number, value: string) => void, values: string[]) => {
-    return Array(count).fill(null).map((_, index) => (
-      <td key={index} className="border border-black border-t-0 border-b-0">
-        <EditableField 
-          value={values?.[index] || ""} 
-          label="" 
-          onChange={(value) => onChange(rowLabel, index, value)}
-        />
-      </td>
-    ));
-  };
 
   const [tableData, setTableData] = useState<{ [key: string]: string[] }>({
     "gen_ad_support_activity1_CO": Array(34).fill(""),
@@ -66,14 +55,7 @@ const TableA: React.FC = () => {
     
   });
   
-  const handleCellChange = (rowLabel: string, index: number, value: string) => {
-    setTableData((prevData) => ({
-      ...prevData,
-      [rowLabel]: prevData[rowLabel] ? 
-        prevData[rowLabel].map((cellValue, i) => (i === index ? value : cellValue)) 
-        : Array(34).fill("").map((_, i) => (i === index ? value : "")) 
-    }));
-  };
+
   const handleCellChange2 = (rowLabel: string, index: number, value: string) => {
     setTableData((prevData) => ({
       ...prevData,
@@ -83,16 +65,6 @@ const TableA: React.FC = () => {
     }));
   };  
 
-  const renderTableRows = () => {
-    return ["CO", "RO 1", "RO 2"].map((label, rowIndex) => (
-      <tr key={rowIndex} className="">
-        <td className="border border-black border-t-0 border-b-0">
-          <h6 className="ml-17 text-sm">{label}</h6>
-        </td>
-        {renderInputTableCells(34, label, handleCellChange, tableData[label])}
-      </tr>
-    ));
-  };
 
   const renderBlank =()=>{
     return              <tr className="h-5 border border-t-0 border-b-0">                  
@@ -107,7 +79,7 @@ const TableA: React.FC = () => {
   return (
     <main className="w-full  mt-2">
       {/* Table Wrapper - Forces full width */}
-      <div ref={tableRef} className="w-[4000px] max-w-none"> 
+      <div ref={tableRef} data-title="A" className="w-[4000px] max-w-none"> 
         <div className="grid gap-0 grid-cols-3 text-center border border-black">
           {/* Labels + Editable Fields */}
           <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
