@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Loader2, Check } from "lucide-react";
 import { useTable } from "../Context/TableContext";
-import { exportToPDF } from "./exportToPDF";
+import { exportToPDF } from "../utils/exportToPDF";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SaveIcon from '@mui/icons-material/Save';
 import { FaFileExcel } from "react-icons/fa";
-import { exportToExcel } from "./exportToExcel";
+import { exportToExcel } from "../utils/exportToExcel";
+import { saveData } from "../utils/saveData";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -98,7 +99,7 @@ const Sidebar: React.FC = () => {
           </li>
 
           <li className="hover:bg-blue-900 p-4">
-            <button className="hover:text-gray-400 flex items-center space-x-2">
+            <button onClick={saveData} className="hover:text-gray-400 flex items-center space-x-2">
               <SaveIcon /> {isOpen && <span>Save</span>}
             </button>
           </li>
