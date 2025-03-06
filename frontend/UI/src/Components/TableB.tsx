@@ -7,6 +7,11 @@ const TableB: React.FC = () => {
   const [department, setDepartment] = useState("");
   const [agency, setAgency] = useState("");
   const [operatingUnit, setOperatingUnit] = useState("");
+  const [budgetOfficer, setBudgetOfficer] = useState("");
+  const [planningOfficer, setPlanningOfficer] = useState("");
+  const [chiefAcc, setChiefAcc] = useState("");
+  const [headoff, setHeadOff] = useState("");
+  const [Date, setDate] = useState("");
 
 
   const { tableRef } = useTable();
@@ -81,23 +86,45 @@ const TableB: React.FC = () => {
       {/* Table Wrapper - Forces full width */}
       <div ref={tableRef} data-title="B" className="w-[4000px] max-w-none"> 
         <div className="grid gap-0 grid-cols-3 text-center border border-black">
-          {/* Labels + Editable Fields */}
-          <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
-            <EditableField label="Department:" value={department} onChange={setDepartment} />
-            <EditableField label="Agency:" value={agency} onChange={setAgency} />
-            <div className="h-10 flex items-center">
-              <span className="font-medium">Operating Unit:</span>
-              <span
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setOperatingUnit(e.target.innerText)}
-                className="form-cell2"
-              >
-                {operatingUnit}
-            </span>
-           </div>
+            {/* Labels + Editable Fields */}
+            <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
+              {/* Operating Unit */}
+              <div className="h-10 flex items-center">
+                <span className="font-medium">Department:</span>
+                <span
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setDepartment(e.target.innerText)}
+                  className="form-cell2"
+                >
+                  {department}
+                </span>
+              </div>
+              {/* Agency */}
+              <div className="h-10 flex items-center">
+                <span className="font-medium">Agency:</span>
+                <span
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setAgency(e.target.innerText)}
+                  className="form-cell2"
+                >
+                  {agency}
+                </span>
+              </div>
+              {/* Operating Unit */}
+              <div className="h-10 flex items-center">
+                <span className="font-medium">Operating Unit:</span>
+                <span
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setOperatingUnit(e.target.innerText)}
+                  className="form-cell2"
+                >
+                  {operatingUnit}
+                </span>
+              </div>
           </div>
-
           {/* Empty Middle Cell */}
           <div className="border border-black w-full min-w-[1000px] text-left p-4">
             <div className="ml-20 text-[12px] font-bold">    
@@ -655,70 +682,80 @@ const TableB: React.FC = () => {
               </tr>
               </tbody>
               <tfoot>
-                <tr className="border h-30">
-                  <td className="border text-[12px]"colSpan={4}>
+              <tr className="border h-30">
+                  <td className="border text-[12px]"colSpan={7}>
                     <div className="font-bold ml-2 text-[14px]">PREPARED BY:</div>
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
-                        <input
-                          id="budget-officer"
-                          type="text"
-                          placeholder=""
-                          className="w-80 border-b border-black focus:outline-none text-center"
-                        />
-                        <div className="mt-1 font-bold">BUDGET OFFICER</div>
+                      <span
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => setBudgetOfficer(e.target.innerText)}
+                          className="footer-cell"
+                        >
+                          {budgetOfficer}
+                        </span>
+                        <div className="line-input font-bold border-t border-black">BUDGET OFFICER</div>
                       </div>
                       
                       <div className="flex flex-col items-center">
-                        <input
-                          id="planning-officer"
-                          type="text"
-                          placeholder=""
-                          className="w-80 border-b border-black focus:outline-none text-center h-6"
-                        />
-                        <div className="mt-1 font-bold">PLANNIG OFFICER</div>
+                      <span
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => setPlanningOfficer(e.target.innerText)}
+                          className="footer-cell"
+                        >
+                          {planningOfficer}
+                        </span>
+                        <div className="line-input font-bold border-t border-black">PLANNIG OFFICER</div>
                       </div>
                     </div>
                     </td>
-                  <td className="border text-[12px]"colSpan={5}>
+                  <td className="border text-[12px]"colSpan={8}>
                   <div className="font-bold ml-2 text-[14px]">CERTIFIED CORRECT</div>
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
-                        <input
-                          id="chief-accountant"
-                          type="text"
-                          placeholder=""
-                          className="w-80 border-b border-black focus:outline-none text-center"
-                        />
-                        <div className="mt-1 font-bold">CHIEF ACCOUNTANT</div>
+                      <span
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => setChiefAcc(e.target.innerText)}
+                          className="footer-cell"
+                        >
+                          {chiefAcc}
+                        </span>
+                        <div className="line-input font-bold border-t border-black">CHIEF ACCOUNTANT</div>
                       </div>
                       </div>
                   </td>
-                  <td className="border text-[12px]"colSpan={6}>                  
+                  <td className="border text-[12px]"colSpan={9}>                  
                    <div className="font-bold ml-2 text-[14px]">APPROVED</div>
                     <div className="flex justify-center space-x-20">
                       <div className="flex flex-col items-center">
-                        <input
-                          id="head-of-office"
-                          type="text"
-                          placeholder=""
-                          className="w-80 border-b border-black focus:outline-none text-center"
-                        />
-                        <div className="mt-1 font-bold">HEAD OF OFFICE/AGENCY</div>
+                      <span
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => setHeadOff(e.target.innerText)}
+                          className="footer-cell"
+                        >
+                          {headoff}
+                        </span>
+                        <div className="line-input font-bold border-t border-black">HEAD OF OFFICE/AGENCY</div>
                       </div>
                       </div>
                     </td>
-                  <td className="border text-[12px]"colSpan={4}>                  
+                  <td className="border text-[12px]"colSpan={11}>                  
                    <div className="font-bold ml-2 text-[14px]">DATE</div>
                     <div className="flex justify-items-start ml-50">
                       <div className="flex flex-col items-start">
-                        <input
-                          id="date"
-                          type="text"
-                          placeholder=""
-                          className="w-50 border-b border-black focus:outline-none text-center"
-                        />
-                        <div className="mt-1 font-bold">DAY/MONTH/YEAR</div>
+                      <span
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={(e) => setDate(e.target.innerText)}
+                          className="footer-cell"
+                        >
+                          {Date}
+                        </span>
+                        <div className="line-input font-bold border-t border-black">DAY/MONTH/YEAR</div>
                       </div>
                       </div>
                     </td>
