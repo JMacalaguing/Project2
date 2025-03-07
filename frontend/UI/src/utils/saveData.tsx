@@ -1,48 +1,53 @@
 export const saveData = async () => {
-  const departmentElements = document.querySelectorAll(".department-cell");
-  const agencyElements = document.querySelectorAll(".agency-cell");
-  const operatingUnitElements = document.querySelectorAll(".operating-unit-cell");
+  // Extract contentEditable values
+  const departmentElement = document.querySelector(".department-cell");
+  const agencyElement = document.querySelector(".agency-cell");
+  const operatingUnitElement = document.querySelector(".operating-unit-cell");
 
-  const departmentData: { name: string }[] = [];
-  const agencyData: { name: string; department: string }[] = [];
-  const operatingUnitData: { name: string; agency: string }[] = [];
+  const departmentName = (departmentElement as HTMLElement)?.innerText.trim() || "";
+  const agencyName = (agencyElement as HTMLElement)?.innerText.trim() || "";
+  const operatingUnitName = (operatingUnitElement as HTMLElement)?.innerText.trim() || "";
 
-  departmentElements.forEach((element) => {
-    const departmentName = (element as HTMLElement).innerText.trim();
-    if (departmentName) {
-      departmentData.push({ name: departmentName });
-    }
-  });
+  // Extract checked checkboxes (Appropriation Types)
+  const appropriationSources = [
+    { id: "new-approriation", name: "New Appropriation (Regular Agency Budget)" },
+    { id: "auto-appropriations", name: "Automatic Appropriations" },
+    { id: "continuing-appropriations", name: "Continuing Appropriations" },
+    { id: "other-appropriations", name: "Others (New Appropriations Transfers from SPFs; Supplemental)" }
+  ].filter(source => (document.getElementById(source.id) as HTMLInputElement)?.checked)
+   .map(source => source.name);
 
-  agencyElements.forEach((element) => {
-    const agencyName = (element as HTMLElement).innerText.trim();
-    const departmentName = element.getAttribute("data-department") || "";
-    if (agencyName && departmentName) {
-      agencyData.push({ name: agencyName, department: departmentName });
-    }
-  });
+  // Extract checked checkboxes (Budget Years)
+  const selectedYears = [
+    { id: "2023-actual", name: "2023-Actual Obligation" },
+    { id: "2024-Current", name: "2024-Current Progress" },
+    { id: "2025-total-proposal", name: "2025-Total Proposal Program" },
+    { id: "TIER1", name: "TIER1" },
+    { id: "TIER2", name: "TIER2" }
+  ].filter(year => (document.getElementById(year.id) as HTMLInputElement)?.checked)
+   .map(year => year.name);
 
-  operatingUnitElements.forEach((element) => {
-    const operatingUnitName = (element as HTMLElement).innerText.trim();
-    const agencyName = element.getAttribute("data-agency") || "";
-    if (operatingUnitName && agencyName) {
-      operatingUnitData.push({ name: operatingUnitName, agency: agencyName });
-    }
-  });
 
+
+  // Prepare the data object
   const requestData = {
-    departments: departmentData,
-    agencies: agencyData,
-    operating_units: operatingUnitData,
+    departments: departmentName ? [{ name: departmentName }] : [],
+    agencies: agencyName ? [{ name: agencyName, department: departmentName }] : [],
+    operating_units: operatingUnitName ? [{ name: operatingUnitName, agency: agencyName }] : [],
+    appropriation_types: appropriationSources,
+    budget_years: selectedYears, // Added Budget Years
   };
 
-  // 🚀 Debugging: Log extracted data
-  console.log("Extracted Departments:", departmentData);
-  console.log("Extracted Agencies:", agencyData);
-  console.log("Extracted Operating Units:", operatingUnitData);
+  console.log("Extracted Departments:", requestData.departments);
+  console.log("Extracted Agencies:", requestData.agencies);
+  console.log("Extracted Operating Units:", requestData.operating_units);
+  console.log("Extracted Appropriation Types:", requestData.appropriation_types);
+  console.log("Extracted Budget Years:", requestData.budget_years);
 
-  if (departmentData.length === 0 && agencyData.length === 0 && operatingUnitData.length === 0) {
-    alert("No data extracted! Please check the table.");
+
+  if (!departmentName && !agencyName && !operatingUnitName && 
+      appropriationSources.length === 0 && selectedYears.length === 0) {
+    alert("No data extracted! Please check the fields.");
     return;
   }
 

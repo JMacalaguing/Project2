@@ -3,7 +3,7 @@ html{
   overflow: hidden;
 }
 .top-bar {
-    background: #1F2937;
+    /*background: #1F2937;*/
     width: calc(100% - 200px);
     position: fixed;
     top: 0;
@@ -30,7 +30,7 @@ html{
 .form-header {
     position: fixed;
     padding: 5px;
-    background: #ffffff;
+    background: #940404;
     top: 63px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }   

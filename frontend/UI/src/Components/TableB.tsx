@@ -60,7 +60,6 @@ const TableB: React.FC = () => {
     
   });
   
-
   const handleCellChange2 = (rowLabel: string, index: number, value: string) => {
     setTableData((prevData) => ({
       ...prevData,
@@ -70,7 +69,6 @@ const TableB: React.FC = () => {
     }));
   };  
 
-
   const renderBlank =()=>{
     return              <tr className="h-5 border border-t-0 border-b-0">                  
     {Array(19).fill(null).map((_, index) => (
@@ -78,9 +76,6 @@ const TableB: React.FC = () => {
       ))}</tr>
   }
 
-
-
-  
   return (
     <main className="w-full  mt-2">
       {/* Table Wrapper - Forces full width */}

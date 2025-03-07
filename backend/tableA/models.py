@@ -67,19 +67,7 @@ class AppropriationType(models.Model):
         return self.name
 
 class BudgetYear(models.Model):
-    """
-    Model for budget year information
-    """
-    year = models.IntegerField()
-    description = models.CharField(max_length=255, blank=True, null=True)
-    is_actual = models.BooleanField(default=False)
-    is_current = models.BooleanField(default=False)
-    is_proposed = models.BooleanField(default=False)
-    tier = models.IntegerField(blank=True, null=True)
-    
-    def __str__(self):
-        return f"{self.year} - {self.description}"
-    
-    class Meta:
-        ordering = ['-year']
+    name = models.CharField(max_length=100, default="Unknown Year")
 
+    def __str__(self):
+        return self.name

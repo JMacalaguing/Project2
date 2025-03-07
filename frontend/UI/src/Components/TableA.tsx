@@ -95,13 +95,11 @@ const TableA: React.FC = () => {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={(e) => setDepartment(e.target.innerText)}
-                className="form-cell2"
+                className="department-cell form-cell2"
               >
                 {department}
               </span>
             </div>
-          
-
             {/* Agency */}
             <div className="h-10 flex items-center">
               <span className="font-medium">Agency:</span>
@@ -109,13 +107,12 @@ const TableA: React.FC = () => {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={(e) => setAgency(e.target.innerText)}
-                className="form-cell2"
+                className="agency-cell form-cell2"
               >
                 {agency}
               </span>
             </div>
            
-
             {/* Operating Unit */}
             <div className="h-10 flex items-center">
               <span className="font-medium">Operating Unit:</span>
@@ -123,7 +120,7 @@ const TableA: React.FC = () => {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={(e) => setOperatingUnit(e.target.innerText)}
-                className="form-cell2"
+                className="operating-unit-cell form-cell2"
               >
                 {operatingUnit}
               </span>
@@ -166,7 +163,7 @@ const TableA: React.FC = () => {
                     <label htmlFor="2024-Current" className="mt-[-6px]">2024-Current Progress</label>
                   </div>
                 <div className="flex item-center mb-2">
-                    <input type="checkbox" id="continuing-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
+                    <input type="checkbox" id="2025-total-proposal" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
                     <label htmlFor="auto-approriation" className="mt-[-6px]">2025-Total Proposal Program</label>
                   </div>
                 <div className="flex item-center ml-20">

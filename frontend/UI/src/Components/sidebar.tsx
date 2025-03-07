@@ -61,7 +61,7 @@ const Sidebar: React.FC = () => {
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 flex justify-center items-center">
-          <div className="bg-gray-900 p-6 rounded-lg shadow-lg">
+          <div className="bg-red-900 p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold text-white">Confirm Logout</h2>
             <p className="text-white">Are you sure you want to log out?</p>
             <div className="mt-4 flex justify-end space-x-2">
@@ -83,7 +83,8 @@ const Sidebar: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`sidebar h-screen bg-gray-900 text-white transition-all duration-300 ${isOpen ? "w-32" : "w-15"} flex flex-col overflow-hidden`}>
+      <div className={`sidebar h-screen text-white transition-all duration-300 ${isOpen ? "w-32" : "w-15"} flex flex-col overflow-hidden`} 
+      style={{ backgroundImage: "url('/bg9.svg')", backgroundSize: "", backgroundPosition: "center top" }}>
         <div className="flex items-center justify-between p-4">
           <span className="text-lg font-bold ">{isOpen ? "National Budget" : "N"}</span>
           <button onClick={() => setIsOpen(!isOpen)} className="text-white focus:outline-none">

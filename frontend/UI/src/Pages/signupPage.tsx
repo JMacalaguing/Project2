@@ -49,9 +49,9 @@ const SignupPage = () => {
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/bg.svg')" }}>
-      <div className="flex h-screen w-[800px] bg-white/20 shadow-lg rounded-3xl">
+      <div className="flex h-screen w-[800px]">
         <div className="flex-1 flex items-center justify-center p-6">
-          <div className="p-8 shadow-lg w-96 h-screen bg-white flex flex-col items-center justify-center">
+          <div className="p-8 w-96 h-screen bg-white flex flex-col items-center justify-center ">
             <h2 className="text-2xl font-bold text-red-900 mb-4">NB FORM SIGN UP</h2>
             {error && <p className="text-red-500 text-sm mb-2">{error}</p>} 
             <form onSubmit={handleSubmit}>

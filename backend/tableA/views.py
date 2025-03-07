@@ -1,76 +1,59 @@
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
-from .models import Department, Agency, OperatingUnit, AppropriationType, BudgetYear
-from .serializers import (
-    DepartmentSerializer, AgencySerializer, OperatingUnitSerializer,
-    AppropriationTypeSerializer, BudgetYearSerializer
-)
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
+from .models import Department, Agency, OperatingUnit, AppropriationType, BudgetYear
 
-@api_view(["POST"])
-@permission_classes([AllowAny])  # Allow any user to access this endpoint
+@api_view(['POST'])
 def save_data(request):
-    """
-    Custom API view to handle bulk saving of departments, agencies, and operating units.
-    """
     try:
         data = request.data
 
+        # Validate required fields exist
+        if not isinstance(data, dict):
+            return Response({"error": "Invalid data format"}, status=status.HTTP_400_BAD_REQUEST)
+
         # Save Departments
-        department_objects = []
-        for dept in data.get("departments", []):
-            department_objects.append(Department(name=dept["name"]))
-        Department.objects.bulk_create(department_objects, ignore_conflicts=True)
+        department_objs = []
+        for item in data.get("departments", []):
+            if "name" in item:
+                obj, _ = Department.objects.get_or_create(name=item["name"])
+                department_objs.append(obj)
 
         # Save Agencies
-        agency_objects = []
-        for agency in data.get("agencies", []):
-            department = Department.objects.filter(name=agency["department"]).first()
-            if department:
-                agency_objects.append(Agency(name=agency["name"], department=department))
-        Agency.objects.bulk_create(agency_objects, ignore_conflicts=True)
+        agency_objs = []
+        for item in data.get("agencies", []):
+            if "name" in item and "department" in item:
+                department = Department.objects.filter(name=item["department"]).first()
+                if department:
+                    obj, _ = Agency.objects.get_or_create(name=item["name"], department=department)
+                    agency_objs.append(obj)
 
         # Save Operating Units
-        operating_unit_objects = []
-        for unit in data.get("operating_units", []):
-            agency = Agency.objects.filter(name=unit["agency"]).first()
-            if agency:
-                operating_unit_objects.append(OperatingUnit(name=unit["name"], agency=agency))
-        OperatingUnit.objects.bulk_create(operating_unit_objects, ignore_conflicts=True)
+        operating_unit_objs = []
+        for item in data.get("operating_units", []):
+            if "name" in item and "agency" in item:
+                agency = Agency.objects.filter(name=item["agency"]).first()
+                if agency:
+                    obj, _ = OperatingUnit.objects.get_or_create(name=item["name"], agency=agency)
+                    operating_unit_objs.append(obj)
+
+        # Save Appropriation Types
+        appropriation_type_objs = []
+        for item in data.get("appropriation_types", []):
+            if isinstance(item, str):  # Ensure it's a valid string
+                obj, _ = AppropriationType.objects.get_or_create(name=item)
+                appropriation_type_objs.append(obj)
+                
+        # Save budget_year
+        budget_year_objs = []
+        for item in data.get("budget_years", []):
+            if isinstance(item, str):  # Ensure it's a valid string
+                obj, _ = BudgetYear.objects.get_or_create(name=item)
+                budget_year_objs.append(obj)
 
         return Response({"message": "Data saved successfully!"}, status=status.HTTP_201_CREATED)
 
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        print(f"Error saving data: {e}")  # Print error in the server logs
+        return Response({"error": "An error occurred while saving data", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class DepartmentViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny]  
-    queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
-    
-
-class AgencyViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny]  
-    queryset = Agency.objects.select_related('department').all()
-    serializer_class = AgencySerializer
-    
-
-class OperatingUnitViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny] 
-    queryset = OperatingUnit.objects.select_related('agency').all()
-    serializer_class = OperatingUnitSerializer
-     
-
-class AppropriationTypeViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny] 
-    queryset = AppropriationType.objects.all()
-    serializer_class = AppropriationTypeSerializer
-    
-
-class BudgetYearViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny]  
-    queryset = BudgetYear.objects.all()
-    serializer_class = BudgetYearSerializer
-   

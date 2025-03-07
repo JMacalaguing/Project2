@@ -29,7 +29,6 @@ class AppropriationTypeAdmin(admin.ModelAdmin):
 
 @admin.register(BudgetYear)
 class BudgetYearAdmin(admin.ModelAdmin):
-    list_display = ("year", "description", "is_actual", "is_current", "is_proposed", "tier")
-    search_fields = ("year", "description")
-    list_filter = ("is_actual", "is_current", "is_proposed")
-    ordering = ("-year",)
+    list_display = ("name",)  # Fixed tuple issue
+    search_fields = ("name",)
+    ordering = ("name",)

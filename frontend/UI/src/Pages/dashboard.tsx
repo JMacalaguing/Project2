@@ -38,19 +38,19 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
   const lines = tableTitles[currentIndex].split("\n");
 
   return (
-    <div className="main-container min-h-screen w-full bg-white">
+    <div className="main-container min-h-screen w-full ">
      <Header/>
 
       {/* Carousel Title with Chevron Buttons */}
-      <div className="form-header">
-          <div className="flex items-center justify-center mb-1">
+      <div className="form-header ">
+          <div className="flex items-center justify-center mb-1" >
             {/* Left Chevron Button */}
           <button onClick={handlePrev} className="mr-4">
-            <ChevronLeft size={50} />
+            <ChevronLeft size={50} color="white" />
           </button>
 
           {/* Title Text */}
-          <h2 className="text-center font-bold">
+          <h2 className=" text-white text-center font-bold">
             {lines.map((line, i) => (
               <React.Fragment key={i}>
                 {line.trim()}
@@ -61,18 +61,18 @@ MAINTENANCE AND OTHER OPERATING EXPENSES`,
 
           {/* Right Chevron Button */}
           <button onClick={handleNext} className="ml-4">
-            <ChevronRight size={50} />
+            <ChevronRight size={50} color="white" />
           </button>
 
           </div>
 
           {/* Subtitle */}
-        <h6 className="text-center font-bold text-[11px]">
+        <h6 className=" text-white text-center font-bold text-[11px]">
           (In Thousand Pesos)
         </h6>
           
         </div>
-    <main className="form-container flex-1 container px-2 py-2">   
+    <main className="form-container flex-1 container px-2 py-2 bg-white">   
         {/* Render the corresponding table */}
         <div className=" ">{tableComponents[currentIndex]}</div>
     </main>
