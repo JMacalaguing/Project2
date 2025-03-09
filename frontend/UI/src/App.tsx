@@ -5,6 +5,7 @@ import { TableProvider } from "./Context/TableContext";
 import LoginPage from "./Pages/loginPage";
 import SignupPage from "./Pages/signupPage";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import Forms from "./Pages/Formlist";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignupPage />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="/forms" element={<Forms/>} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>

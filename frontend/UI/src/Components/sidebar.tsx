@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Loader2, Check } from "lucide-react";
 import { useTable } from "../Context/TableContext";
 import { exportToPDF } from "../utils/exportToPDF";
@@ -10,6 +10,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { FaFileExcel } from "react-icons/fa";
 import { exportToExcel } from "../utils/exportToExcel";
 import { saveData } from "../utils/saveData";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -97,6 +98,11 @@ const Sidebar: React.FC = () => {
             <AccountCircleIcon style={{ fontSize: 30, color:"#FFF5E49"}} /> 
             {isOpen && <span className="mt-2 text-sm text-center">{userName ? userName : "Guest"}</span>}  
             {isOpen && <hr className="mt-2 w-full border-t border-gray-500" />} 
+          </li>
+          <li className="hover:bg-blue-900 p-4">
+            <button onClick={() => navigate("/forms")} className="hover:text-gray-400 flex items-center space-x-2">
+              <FormatListBulletedIcon /> {isOpen && <span>Forms</span>}
+            </button>
           </li>
 
           <li className="hover:bg-blue-900 p-4">

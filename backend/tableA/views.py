@@ -1,59 +1,79 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from .models import Department, Agency, OperatingUnit, AppropriationType, BudgetYear
+from rest_framework.permissions import AllowAny
 
 @api_view(['POST'])
 def save_data(request):
     try:
         data = request.data
 
-        # Validate required fields exist
         if not isinstance(data, dict):
             return Response({"error": "Invalid data format"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Save Departments
-        department_objs = []
+        # Update or create Departments
         for item in data.get("departments", []):
             if "name" in item:
-                obj, _ = Department.objects.get_or_create(name=item["name"])
-                department_objs.append(obj)
+                Department.objects.update_or_create(name=item["name"], defaults={"name": item["name"]})
 
-        # Save Agencies
-        agency_objs = []
+        # Update or create Agencies
         for item in data.get("agencies", []):
             if "name" in item and "department" in item:
                 department = Department.objects.filter(name=item["department"]).first()
                 if department:
-                    obj, _ = Agency.objects.get_or_create(name=item["name"], department=department)
-                    agency_objs.append(obj)
+                    Agency.objects.update_or_create(name=item["name"], department=department, defaults={"name": item["name"]})
 
-        # Save Operating Units
-        operating_unit_objs = []
+        # Update or create Operating Units
         for item in data.get("operating_units", []):
             if "name" in item and "agency" in item:
                 agency = Agency.objects.filter(name=item["agency"]).first()
                 if agency:
-                    obj, _ = OperatingUnit.objects.get_or_create(name=item["name"], agency=agency)
-                    operating_unit_objs.append(obj)
+                    OperatingUnit.objects.update_or_create(name=item["name"], agency=agency, defaults={"name": item["name"]})
 
-        # Save Appropriation Types
-        appropriation_type_objs = []
+        # Update or create Appropriation Types
         for item in data.get("appropriation_types", []):
-            if isinstance(item, str):  # Ensure it's a valid string
-                obj, _ = AppropriationType.objects.get_or_create(name=item)
-                appropriation_type_objs.append(obj)
-                
-        # Save budget_year
-        budget_year_objs = []
-        for item in data.get("budget_years", []):
-            if isinstance(item, str):  # Ensure it's a valid string
-                obj, _ = BudgetYear.objects.get_or_create(name=item)
-                budget_year_objs.append(obj)
+            if isinstance(item, str):  
+                AppropriationType.objects.update_or_create(name=item, defaults={"name": item})
 
-        return Response({"message": "Data saved successfully!"}, status=status.HTTP_201_CREATED)
+        # Update or create Budget Years
+        for item in data.get("budget_years", []):
+            if isinstance(item, str):
+                BudgetYear.objects.update_or_create(name=item, defaults={"name": item})
+
+        return Response({"message": "Data updated successfully!"}, status=status.HTTP_200_OK)
 
     except Exception as e:
-        print(f"Error saving data: {e}")  # Print error in the server logs
-        return Response({"error": "An error occurred while saving data", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"error": "An error occurred while updating data", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_data(request):
+    try:
+        # Fetch all departments
+        departments = Department.objects.all().values("id", "name")
+        
+        # Fetch all agencies
+        agencies = Agency.objects.all().values("id", "name", "department__name")
+        
+        # Fetch all operating units
+        operating_units = OperatingUnit.objects.all().values("id", "name", "agency__name")
+        
+        # Fetch all appropriation types
+        appropriation_types = AppropriationType.objects.all().values("id", "name")
+        
+        # Fetch all budget years
+        budget_years = BudgetYear.objects.all().values("id", "name")
+
+        data = {
+            "departments": list(departments),
+            "agencies": list(agencies),
+            "operating_units": list(operating_units),
+            "appropriation_types": list(appropriation_types),
+            "budget_years": list(budget_years),
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": "An error occurred while fetching data", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

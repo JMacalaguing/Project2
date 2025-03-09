@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditableField from "./EditableField";
 import { useTable } from "../Context/TableContext";
 
@@ -12,10 +12,45 @@ const TableA: React.FC = () => {
   const [chiefAcc, setChiefAcc] = useState("");
   const [headoff, setHeadOff] = useState("");
   const [Date, setDate] = useState("");
-
-
   const { tableRef } = useTable();
+  
+// Fetch data when component mounts 
+useEffect(() => {
+  fetchData();
+}, []);
 
+const fetchData = async () => {
+  try {
+    console.log("Fetching data from API...");
+
+    const response = await fetch("http://localhost:8000/api/get-data/", {
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+    });
+
+    console.log("Response Status:", response.status);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Fetched Data:", data);
+
+      setDepartment(data.departments[0]?.name || "");
+      setAgency(data.agencies[0]?.name || "");
+      setOperatingUnit(data.operating_units[0]?.name || "");
+
+
+    } else {
+      console.error("Failed to fetch data.");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+
+
+  
   const renderTableCells = (count: number) => {
     return Array(count).fill(null).map((_, index) => (
       <td key={index} className="border border-black border-t-0 border-b-0"></td>
@@ -79,8 +114,6 @@ const TableA: React.FC = () => {
   }
 
 
-
-  
   return (
     <main className="w-full  mt-2">
       {/* Table Wrapper - Forces full width */}
@@ -88,7 +121,7 @@ const TableA: React.FC = () => {
         <div className="grid gap-0 grid-cols-3 text-center border border-black">
           {/* Labels + Editable Fields */}
           <div className="border border-black text-left pl-1 w-full min-w-[1000px] ">
-            {/* Operating Unit */}
+           
             <div className="h-10 flex items-center">
               <span className="font-medium">Department:</span>
               <span
