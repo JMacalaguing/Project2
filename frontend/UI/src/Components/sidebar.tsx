@@ -100,7 +100,7 @@ const Sidebar: React.FC = () => {
             {isOpen && <hr className="mt-2 w-full border-t border-gray-500" />} 
           </li>
           <li className="hover:bg-blue-900 p-4">
-            <button onClick={() => navigate("/forms")} className="hover:text-gray-400 flex items-center space-x-2">
+            <button onClick={() => navigate("/FormsAdmin")} className="hover:text-gray-400 flex items-center space-x-2">
               <FormatListBulletedIcon /> {isOpen && <span>Forms</span>}
             </button>
           </li>

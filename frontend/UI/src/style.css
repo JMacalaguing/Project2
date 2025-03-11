@@ -85,10 +85,33 @@ html{
     text-align: center;
 }
 
-.formlist-container{
+.main-container2{
+    padding-top: 15px;
+    margin-bottom: 11px;
+    margin-top: 90px;
+    margin-left: 70px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.main-container2{
+    width: calc(100% - 200px);
+}
+
+.form-container2{
+    width:100%;
+    max-width: 100%;
+}
+
+.form-container2 > div {
+    overflow: auto;
+    width: -webkit-fill-available;
+    height: calc(100vh - 118px);
+    max-width: 100%;
+}
+
+.Entry-button{
+    margin-left: 10px;
+}
 
 @keyframes flip {
     0% { transform: rotateY(0deg); }

@@ -163,7 +163,7 @@ const fetchData = async () => {
           {/* Empty Middle Cell */}
           <div className="border border-black w-full min-w-[1000px] text-left p-4">
             <div className="ml-20 text-[12px] font-bold">    
-                <div className="mb-2">PPROPRIATION SOURCE (Please check)</div>
+                <div className="mb-2">PROPRIATION SOURCE (Please check)</div>
                   <div className="flex item-center">
                     <input type="checkbox" id="new-approriation" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
                     <label htmlFor="new-approriation" className="mt-[-6px]">New Approriation (Regular Agency Badget)</label>

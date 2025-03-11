@@ -58,7 +58,8 @@ def login_view(request):
     user_data = {
         "id": user.id,
         "email": user.email,
-        "name": user.name,  # Ensure `name` exists in your CustomUser model
+        "name": user.name, 
+        "is_staff": user.is_staff
     }
 
     return Response({

@@ -12,16 +12,22 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
-
+  
     try {
       const { data } = await axios.post("http://127.0.0.1:8000/api/login/", {
         email,
         password,
       });
-
+  
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/dashboard");
+  
+      // Check if the user is staff and navigate accordingly
+      if (data.user.is_staff) {
+        navigate("/formsadmin");
+      } else {
+        navigate("/formsuser");
+      }
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
