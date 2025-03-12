@@ -109,9 +109,18 @@ html{
     max-width: 100%;
 }
 
-.Entry-button{
-    margin-left: 10px;
+.main-container3{
+    padding-top: 5px;
+    margin-bottom: 11px;
+    margin-top: 90px;
+    margin-left: 70px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.main-container3{
+    width: calc(100% - 200px);
+}
+
 
 @keyframes flip {
     0% { transform: rotateY(0deg); }

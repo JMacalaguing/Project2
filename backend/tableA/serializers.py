@@ -1,31 +1,22 @@
 from rest_framework import serializers
-from .models import Department, Agency, OperatingUnit, AppropriationType, BudgetYear
+from .models import FormData
+from django.contrib.auth import get_user_model
 
-class DepartmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = '__all__'
+User = get_user_model
 
-class AgencySerializer(serializers.ModelSerializer):
-    department_name = serializers.ReadOnlyField(source='department.name')
-
-    class Meta:
-        model = Agency
-        fields = '__all__'
-
-class OperatingUnitSerializer(serializers.ModelSerializer):
-    agency_name = serializers.ReadOnlyField(source='agency.name')
+class FormsSerializer(serializers.ModelSerializer):
+    form_name = serializers.StringRelatedField()
+    department = serializers.StringRelatedField()
+    agency = serializers.StringRelatedField()
+    operating_unit = serializers.StringRelatedField()
+    appropriation_source = serializers.StringRelatedField()
+    year = serializers.StringRelatedField()
 
     class Meta:
-        model = OperatingUnit
-        fields = '__all__'
+        model = FormData
+        fields = ["id", "form_name", "department", "agency","operating_unit","appropriation_source","year","created_at", "updated_at"]
 
-class AppropriationTypeSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AppropriationType
-        fields = '__all__'
-
-class BudgetYearSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BudgetYear
-        fields = '__all__'
+        model = User  # Use the custom user model
+        fields = ["id", "email", "name"] 

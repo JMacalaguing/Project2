@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import EditableField from "./EditableField";
 import { useTable } from "../Context/TableContext";
+import axios from "axios";
 
-
-const TableA: React.FC = () => {
+interface TableAProps {
+  formId: string; 
+}
+const TableA: React.FC<TableAProps> = ({ formId }) => {
   const [department, setDepartment] = useState("");
   const [agency, setAgency] = useState("");
   const [operatingUnit, setOperatingUnit] = useState("");
@@ -13,17 +16,22 @@ const TableA: React.FC = () => {
   const [headoff, setHeadOff] = useState("");
   const [Date, setDate] = useState("");
   const { tableRef } = useTable();
-  
-// Fetch data when component mounts 
-useEffect(() => {
-  fetchData();
-}, []);
+  const [appropriationSource, setAppropriationSource] = useState("");
+  const [year, setYear] = useState("");
 
-const fetchData = async () => {
+  
+
+  useEffect(() => {
+    if (formId) {
+      fetchData(formId);
+    }
+  }, [formId]);
+
+const fetchData = async (formId: string) => {
   try {
     console.log("Fetching data from API...");
 
-    const response = await fetch("http://localhost:8000/api/get-data/", {
+    const response = await axios.get(`http://localhost:8000/api/get-form/${formId}/`, {
       headers: {
         Authorization: `Token ${localStorage.getItem("token")}`,
       },
@@ -31,14 +39,15 @@ const fetchData = async () => {
 
     console.log("Response Status:", response.status);
 
-    if (response.ok) {
-      const data = await response.json();
+    if (response.status === 200) {
+      const data = response.data; 
       console.log("Fetched Data:", data);
 
-      setDepartment(data.departments[0]?.name || "");
-      setAgency(data.agencies[0]?.name || "");
-      setOperatingUnit(data.operating_units[0]?.name || "");
-
+      setDepartment(data.department || "");
+      setAgency(data.agency || "");
+      setOperatingUnit(data.operating_unit || "");
+      setAppropriationSource(data.appropriation_source || "");
+      setYear(data.year || "");
 
     } else {
       console.error("Failed to fetch data.");
@@ -48,9 +57,6 @@ const fetchData = async () => {
   }
 };
 
-
-
-  
   const renderTableCells = (count: number) => {
     return Array(count).fill(null).map((_, index) => (
       <td key={index} className="border border-black border-t-0 border-b-0"></td>
@@ -104,6 +110,12 @@ const fetchData = async () => {
       )
     }));
   };  
+
+
+    // Handle checkbox changes
+    const handleCheckboxChange = (value: string) => {
+      setAppropriationSource(value);
+    };
 
 
   const renderBlank =()=>{
@@ -165,19 +177,25 @@ const fetchData = async () => {
             <div className="ml-20 text-[12px] font-bold">    
                 <div className="mb-2">PROPRIATION SOURCE (Please check)</div>
                   <div className="flex item-center">
-                    <input type="checkbox" id="new-approriation" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="new-approriation" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                     checked={appropriationSource === "New Approriation (Regular Agency Badget)"}
+                     onChange={() => handleCheckboxChange("New Approriation (Regular Agency Badget)")}/>
                     <label htmlFor="new-approriation" className="mt-[-6px]">New Approriation (Regular Agency Badget)</label>
                   </div> 
                 <div className="flex item-center">
-                    <input type="checkbox" id="auto-appropriations"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="auto-appropriations"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                      checked={appropriationSource === "Automatic Appropriations"}
+                      onChange={() => handleCheckboxChange("Automatic Appropriations")}/>
                     <label htmlFor="auto-approriation" className="mt-[-6px]">Automatic Appropriations</label>
                   </div>
                 <div className="flex item-center">
-                    <input type="checkbox" id="continuing-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
+                    <input type="checkbox" id="continuing-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"
+                    checked={appropriationSource === "Continuing Appropriations"} onChange={() => handleCheckboxChange("Continuing Appropriations")}/>
                     <label htmlFor="auto-approriation" className="mt-[-6px]">Continuing Appropriations</label>
                   </div>
                 <div className="flex item-center">
-                    <input type="checkbox" id="other-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="other-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                     checked={appropriationSource === "Others(New Appropriations Transfers from  SPFs; Supplemental)"} onChange={() => handleCheckboxChange("Others(New Appropriations Transfers from  SPFs; Supplemental)")}/>
                     <label htmlFor="other-approriation" className="mt-[-6px]">Others(New Appropriations Transfers from  SPFs; Supplemental)</label>
                   </div>
              </div>
@@ -188,23 +206,28 @@ const fetchData = async () => {
           <div className="ml-20 text-[12px] font-bold">    
                 <div className="ml-1 mb-2">YEAR(Please check):</div>
                   <div className="flex item-center">
-                    <input type="checkbox" id="2023-actual" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
+                    <input type="checkbox" id="2023-actual" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"
+                    checked={year === "2023-Actual Obligation"} onChange={() => handleCheckboxChange("2023-Actual Obligation")}/>
                     <label htmlFor="2023-actual" className="mt-[-6px]">2023-Actual Obligation</label>
                   </div> 
                 <div className="flex item-center">
-                    <input type="checkbox" id="2024-Current"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="2024-Current"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                    checked={year === "2024-Current Progress"} onChange={() => handleCheckboxChange("2024-Current Progress")}/>
                     <label htmlFor="2024-Current" className="mt-[-6px]">2024-Current Progress</label>
                   </div>
                 <div className="flex item-center mb-2">
-                    <input type="checkbox" id="2025-total-proposal" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"/>
+                    <input type="checkbox" id="2025-total-proposal" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg"
+                    checked={year === "2025-Total Proposal Program"} onChange={() => handleCheckboxChange("2025-Total Proposal Program")}/>
                     <label htmlFor="auto-approriation" className="mt-[-6px]">2025-Total Proposal Program</label>
                   </div>
                 <div className="flex item-center ml-20">
-                    <input type="checkbox" id="TIER1" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="TIER1" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                    checked={year === "TIER1"} onChange={() => handleCheckboxChange("TIER1")}/>
                     <label htmlFor="TIER1" className="mt-[-6px]">TIER1</label>
                   </div>
                 <div className="flex item-center ml-20">
-                    <input type="checkbox" id="TIER2" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "/>
+                    <input type="checkbox" id="TIER2" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
+                    checked={year === "TIER2"} onChange={() => handleCheckboxChange("TIER2")}/>
                     <label htmlFor="TIER2" className="mt-[-6px]">TIER2</label>
                   </div>
              </div>

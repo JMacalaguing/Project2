@@ -15,6 +15,12 @@ const ProtectedRoute: React.FC = () => {
     return <Navigate to="/FormsUser" replace />;
   }
 
+    // If the user is not a staff member and tries to access /FormsAdmin, redirect to /dashboard
+    if (window.location.pathname === "/Manage-Form/:id" && !user.is_staff) {
+      return <Navigate to="/dashboard" replace />;
+    } 
+  
+
   return <Outlet />;
 };
 
