@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Loader2, Check } from "lucide-react";
 import { useTable } from "../Context/TableContext";
 import { exportToPDF } from "../utils/exportToPDF";
@@ -12,16 +12,49 @@ import { exportToExcel } from "../utils/exportToExcel";
 import { saveData } from "../utils/saveData";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
+// Snackbar component
+interface SnackbarProps {
+  message: string;
+  type: 'success' | 'error' | 'info' | 'warning';
+  isVisible: boolean;
+}
+
+const Snackbar: React.FC<SnackbarProps> = ({ message, type, isVisible }) => {
+  if (!isVisible) return null;
+
+  const bgColor = 
+    type === 'success' ? 'bg-green-500' : 
+    type === 'error' ? 'bg-red-500' : 
+    type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500';
+
+  return (
+    <div className={`fixed bottom-4 right-4 ${bgColor} text-white px-4 py-2 rounded-md shadow-lg flex items-center z-50`}>
+      {type === 'success' && <Check className="mr-2" size={16} />}
+      {message}
+    </div>
+  );
+};
+
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const { tableRef } = useTable();
   const [isExporting, setIsExporting] = useState(false);
   const [isExporting2, setIsExporting2] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const [showCheck2, setShowCheck2] = useState(false);
+  const [showSaveCheck, setShowSaveCheck] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
-  const [showLogoutModal, setShowLogoutModal] = useState(false); // Modal state
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  
+  // Snackbar states
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({
+    message: '',
+    type: 'info',
+    isVisible: false
+  });
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -31,50 +64,120 @@ const Sidebar: React.FC = () => {
     }
   }, []);
 
+  const showSnackbar = (message: string, type: 'success' | 'error' | 'info' | 'warning') => {
+    setSnackbar({
+      message,
+      type,
+      isVisible: true
+    });
+    
+    // Auto hide after 3 seconds
+    setTimeout(() => {
+      setSnackbar(prev => ({ ...prev, isVisible: false }));
+    }, 3000);
+  };
+
+  // Check if currently in the dashboard
+  const isDashboardPage = () => {
+    // Add all the paths that are considered part of the dashboard
+    const dashboardPaths = ['/dashboard', '/table', '/home', '/admin']; 
+    return dashboardPaths.some(path => location.pathname.includes(path));
+  };
+
   const HandleLogout = () => {
     console.log("Logging out...");
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    navigate("/", { replace: true });
-    window.location.reload();
+    showSnackbar("Logged out successfully", "success");
+    
+    // Delay navigation to show the snackbar first
+    setTimeout(() => {
+      navigate("/", { replace: true });
+      window.location.reload();
+    }, 1000);
   };
 
   const handlePDF = async () => {
+    // Check if user is in dashboard
+    if (!isDashboardPage()) {
+      showSnackbar("PDF export is only available on dashboard pages", "warning");
+      return;
+    }
+    
     setIsExporting(true);
     setShowCheck(false);
-    await exportToPDF(tableRef);
-    setIsExporting(false);
-    setShowCheck(true);
-    setTimeout(() => setShowCheck(false), 3000);
+    try {
+      await exportToPDF(tableRef);
+      setShowCheck(true);
+      showSnackbar("PDF exported successfully", "success");
+    } catch (error) {
+      showSnackbar("Failed to export PDF", "error");
+    } finally {
+      setIsExporting(false);
+      setTimeout(() => setShowCheck(false), 3000);
+    }
   };
 
   const handleExcel = async () => {
+    // Check if user is in dashboard
+    if (!isDashboardPage()) {
+      showSnackbar("Excel export is only available on dashboard pages", "warning");
+      return;
+    }
+    
     setIsExporting2(true);
     setShowCheck2(false);
-    await exportToExcel(tableRef);
-    setIsExporting2(false);
-    setShowCheck2(true);
-    setTimeout(() => setShowCheck2(false), 3000);
+    try {
+      await exportToExcel(tableRef);
+      setShowCheck2(true);
+      showSnackbar("Excel file exported successfully", "success");
+    } catch (error) {
+      showSnackbar("Failed to export Excel file", "error");
+    } finally {
+      setIsExporting2(false);
+      setTimeout(() => setShowCheck2(false), 3000);
+    }
+  };
+
+  const handleSave = async () => {
+    // Check if user is in dashboard
+    if (!isDashboardPage()) {
+      showSnackbar("Saving is only available on dashboard pages", "warning");
+      return;
+    }
+    
+    setIsSaving(true);
+    setShowSaveCheck(false);
+    try {
+      await saveData();
+      setShowSaveCheck(true);
+      showSnackbar("Data saved successfully", "success");
+    } catch (error) {
+      showSnackbar("Failed to save data", "error");
+    } finally {
+      setIsSaving(false);
+      setTimeout(() => setShowSaveCheck(false), 3000);
+    }
   };
 
   return (
     <>
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 flex justify-center items-center">
-          <div className="bg-red-900 p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold text-white">Confirm Logout</h2>
-            <p className="text-white">Are you sure you want to log out?</p>
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold text-red-900">Confirm Logout</h2>
+            <p className="text-red-800">Are you sure you want to log out?</p>
             <div className="mt-4 flex justify-end space-x-2">
               <button 
                 onClick={() => setShowLogoutModal(false)} 
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-gray-600"
               >
                 Cancel
               </button>
               <button 
                 onClick={HandleLogout} 
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-red-700"
               >
                 Yes, Logout
               </button>
@@ -106,8 +209,13 @@ const Sidebar: React.FC = () => {
           </li>
 
           <li className="hover:bg-blue-900 p-4">
-            <button onClick={saveData} className="hover:text-gray-400 flex items-center space-x-2">
-              <SaveIcon /> {isOpen && <span>Save</span>}
+            <button 
+              onClick={handleSave} 
+              className={`hover:text-gray-400 flex items-center space-x-2 ${isSaving ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={isSaving}
+            >
+              {isSaving ? <Loader2 className="animate-spin" size={24} /> : showSaveCheck ? <Check className="text-green-500" size={24} /> : <SaveIcon />} 
+              {isOpen && <span>{isSaving ? "Saving..." : showSaveCheck ? "Saved!" : "Save"}</span>}
             </button>
           </li>
 
@@ -142,6 +250,13 @@ const Sidebar: React.FC = () => {
           </li>
         </ul>
       </div>
+
+      {/* Snackbar */}
+      <Snackbar 
+        message={snackbar.message}
+        type={snackbar.type}
+        isVisible={snackbar.isVisible}
+      />
     </>
   );
 };

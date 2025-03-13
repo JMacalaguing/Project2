@@ -166,10 +166,28 @@ def add_allowed_user(request, formId):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_users(request):
-    users = User.objects.filter(is_staff=False) 
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    try:
+        # Check if the user is staff
+        if not request.user.is_staff:
+            return Response({"error": "Access denied"}, status=status.HTTP_403_FORBIDDEN)
 
+        # Get the form_id from query parameters
+        form_id = request.query_params.get('form_id')
+
+        if not form_id:
+            return Response({"error": "form_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get users who are not staff and not already assigned to the form
+        assigned_users = AllowedUser.objects.filter(form_id=form_id).values_list("user_id", flat=True)
+        users = User.objects.filter(is_staff=False).exclude(id__in=assigned_users)
+
+        # Serialize the users and return the response
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_allowed_users(request, formId):
@@ -188,3 +206,25 @@ def get_allowed_users(request, formId):
         return Response(data, status=status.HTTP_200_OK)
     except FormData.DoesNotExist:
         return Response({"error": "Form not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def remove_allowed_user(request, formId, userId):
+    try:
+        # Ensure the requester is a staff user
+        if not request.user.is_staff:
+            return Response({"error": "You do not have permission to manage this form."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Fetch the allowed user entry
+        allowed_user = AllowedUser.objects.filter(form_id=formId, user_id=userId).first()
+
+        if not allowed_user:
+            return Response({"error": "User is not assigned to this form."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Delete the allowed user entry
+        allowed_user.delete()
+        return Response({"message": "User removed successfully."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
