@@ -9,7 +9,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SaveIcon from '@mui/icons-material/Save';
 import { FaFileExcel } from "react-icons/fa";
 import { exportToExcel } from "../utils/exportToExcel";
-import { saveData } from "../utils/saveData";
+import { UpdateForm } from "../utils/update_form";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 // Snackbar component
@@ -149,7 +149,7 @@ const Sidebar: React.FC = () => {
     setIsSaving(true);
     setShowSaveCheck(false);
     try {
-      await saveData();
+      await UpdateForm();
       setShowSaveCheck(true);
       showSnackbar("Data saved successfully", "success");
     } catch (error) {
@@ -164,7 +164,7 @@ const Sidebar: React.FC = () => {
     <>
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex justify-center items-center backdrop-blur-xs z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold text-red-900">Confirm Logout</h2>
             <p className="text-red-800">Are you sure you want to log out?</p>

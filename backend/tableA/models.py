@@ -37,7 +37,7 @@ class Agency(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} ({self.department.name})"
+        return self.name
 
     class Meta:
         ordering = ['department', 'name']
@@ -53,7 +53,7 @@ class OperatingUnit(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} ({self.agency.name})"
+        return self.name
 
     class Meta:
         ordering = ['agency', 'name']

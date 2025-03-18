@@ -4,7 +4,7 @@ from .views import get_forms, save_form, update_form, get_form_by_id, get_users,
 urlpatterns = [
     path('api/get-forms/', get_forms, name='get-forms'),
     path('api/save-form/', save_form, name='save_form'),
-    path('api/update-data/', update_form, name='update_data'),
+    path('api/update-data/<int:form_id>/', update_form, name='update_data'),
     path("api/get-form/<int:formId>/", get_form_by_id),
     path('api/get_users/', get_users, name='get_users'),
     path("api/add_allowed_user/<int:formId>/", add_allowed_user, name="add_allowed_user"),

@@ -1,3 +1,4 @@
+import re
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
@@ -6,6 +7,7 @@ from rest_framework.permissions import AllowAny , IsAuthenticated
 from .serializers import FormsSerializer
 from django.contrib.auth import get_user_model
 from user.serializers import UserSerializer
+from django.utils import timezone
 
 
 User = get_user_model()
@@ -94,49 +96,108 @@ def save_form(request):
         print(f"Error: {str(e)}")
         return Response({"error": str(e)}, status=400)
 
+
+
+def clean_name(name):
+    """Remove parenthesized text from name to prevent duplication."""
+    return re.sub(r"\s*\(.*?\)", "", name).strip()
+
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def update_form(request, form_id):
     try:
         data = request.data
+        print(f"Received Update Request for Form ID: {form_id}")
+        print(f"Raw Data Received: {data}")
 
-        # Fetch the existing form
-        form = Form.objects.get(id=form_id)
+        # Fetch the existing FormData using the provided ID
+        form_data = FormData.objects.get(id=form_id)
+        print(f"Existing Form Data: Department={form_data.department.name}, Agency={form_data.agency.name}, OperatingUnit={form_data.operating_unit.name}")
 
-        # Ensure Department exists or update
-        department, _ = Department.objects.get_or_create(name=data["department"], form=form)
+        # Update Department
+        if "department" in data and data["department"]:
+            form_data.department.name = data["department"]
+            print(f"Updated Department: {form_data.department.name}")
+            form_data.department.save()
 
-        # Ensure Agency exists or update under this Department
-        agency, _ = Agency.objects.get_or_create(name=data["agency"], department=department)
+        # Update Agency
+        if "agency" in data and data["agency"]:
+            print(f"Original Agency: {form_data.agency.name}")
+            if data["agency"] != form_data.agency.name:
+                form_data.agency.name = data["agency"]
+                print(f"Updated Agency: {form_data.agency.name}")
+                form_data.agency.save()
 
-        # Ensure Operating Unit exists or update under this Agency
-        operating_unit, _ = OperatingUnit.objects.get_or_create(name=data.get("operating_unit", ""), agency=agency)
+        # Update Operating Unit
+        if "operating_unit" in data and data["operating_unit"]:
+            print(f"Original Operating Unit: {form_data.operating_unit.name}")
+            if data["operating_unit"] != form_data.operating_unit.name:
+                form_data.operating_unit.name = data["operating_unit"]
+                print(f"Updated Operating Unit: {form_data.operating_unit.name}")
+                form_data.operating_unit.save()
 
-        # Ensure Appropriation Source exists or update
-        appropriation_source, _ = AppropriationType.objects.get_or_create(name=data.get("appropriation_source", ""), department=department)
+        # Handle appropriation_source
+        if "appropriation_source" in data:
+            # Check if appropriation_source exists in the database for this form
+            if hasattr(form_data, 'appropriation_source') and form_data.appropriation_source:
+                # If data is an empty list or None, clear the current value
+                if not data["appropriation_source"]:
+                    form_data.appropriation_source = None
+                    print(f"Cleared Appropriation Source")
+                else:
+                    # If it's a list with values, join them with a separator
+                    if isinstance(data["appropriation_source"], list):
+                        form_data.appropriation_source.name = ", ".join(data["appropriation_source"])
+                    else:
+                        form_data.appropriation_source.name = data["appropriation_source"]
+                    print(f"Updated Appropriation Source: {form_data.appropriation_source.name}")
+                    form_data.appropriation_source.save()
+            else:
+                # If there's no existing appropriation_source but data is provided
+                if data["appropriation_source"]:
+                    # Create a new AppropriationSource instance
+                    from .models import AppropriationSource  # Import the model
+                    
+                    source_name = ", ".join(data["appropriation_source"]) if isinstance(data["appropriation_source"], list) else data["appropriation_source"]
+                    appropriation = AppropriationSource.objects.create(name=source_name)
+                    form_data.appropriation_source = appropriation
+                    print(f"Created New Appropriation Source: {source_name}")
 
-        # Ensure Year exists or update
-        year, _ = BudgetYear.objects.get_or_create(name=data.get("year", ""), department=department)
+        # Handle year
+        if "year" in data and data["year"]:
+            form_data.year.name = data["year"][0] if isinstance(data["year"], list) else data["year"]
+            print(f"Updated Year: {form_data.year.name}")
+            form_data.year.save()
 
-        # Update Form name if changed
-        form.name = data["form_name"]
-        form.save()
+        # Save main form data
+        form_data.save()
+        
+        print(f"Final Saved Data: Department={form_data.department.name}, Agency={form_data.agency.name}, OperatingUnit={form_data.operating_unit.name}")
 
-        # Update the existing FormData entry
-        form_data, _ = FormData.objects.update_or_create(
-            form_name=form,
-            defaults={
-                "department": department,
-                "agency": agency,
-                "operating_unit": operating_unit,
-                "appropriation_source": appropriation_source,
-                "year": year,
+        # Include appropriation_source in the response
+        appropriation_source_value = None
+        if hasattr(form_data, 'appropriation_source') and form_data.appropriation_source:
+            if hasattr(form_data.appropriation_source, 'name'):
+                appropriation_source_value = form_data.appropriation_source.name
+            else:
+                appropriation_source_value = str(form_data.appropriation_source)
+                
+        return Response(
+            {
+                "message": "Form data updated successfully!",
+                "id": form_data.id,
+                "form_name": form_data.form_name.name if hasattr(form_data.form_name, "name") else str(form_data.form_name),
+                "department": form_data.department.name,
+                "agency": form_data.agency.name if form_data.agency else "",
+                "operating_unit": form_data.operating_unit.name if form_data.operating_unit else "",
+                "appropriation_source": appropriation_source_value,
+                "year": form_data.year.name if form_data.year else "",
             },
+            status=status.HTTP_200_OK,
         )
-
-        return Response({"message": "Form updated successfully!", "id": form.id}, status=status.HTTP_200_OK)
-
-    except Form.DoesNotExist:
-        return Response({"error": "Form not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+    except FormData.DoesNotExist:
+        return Response({"error": "Form data not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

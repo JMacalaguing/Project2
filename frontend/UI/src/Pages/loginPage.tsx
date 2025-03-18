@@ -94,7 +94,7 @@ const LoginPage: React.FC = () => {
     >
       {/* Login Form */}
       <div
-        className="relative w-full max-w-md p-15 pt-10 rounded-3xl shadow-2xl flex flex-col items-center bg-gray-50/1">
+        className="relative w-full max-w-md p-15 pt-10 rounded-3xl shadow-2xl flex flex-col items-center bg-white/80">
         <img src="/logo.png" alt="Logo" className="h-30 mb-4 logo-flip" />
         <h2 className="text-2xl sm:text-3xl font-bold text-red-900 text-center mb-4 font-">
           NATIONAL BUDGET FORM

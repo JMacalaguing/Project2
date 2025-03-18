@@ -170,8 +170,8 @@ const FormsAdmin: React.FC = () => {
 
   const appropriation_source = [
     {
-      value: 'New Approriation (Regular Agency Badget)',
-      label: 'New Approriation (Regular Agency Badget)'
+      value: 'New Appropriation (Regular Agency Budget)',
+      label: 'New Appropriation (Regular Agency Budget)'
     },
     {
       value: 'Automatic Appropriations',
@@ -218,9 +218,9 @@ const FormsAdmin: React.FC = () => {
     <div className="main-container2">
       <Header />
 
-      <div className="flex items-center justify-between w-full mb-4">
+      <div className="flex items-start justify-between w-full mb-4 pl-10 pr-2">
         {/* Improved Search Bar */}
-        <div className="relative mx-auto w-120"> 
+        <div className="relative  w-130"> 
           <TextField
             className="w-full"
             placeholder="Search by form name, department..."
@@ -257,7 +257,7 @@ const FormsAdmin: React.FC = () => {
         {/* Add Entry Button */}
         <button
           onClick={handleOpen}
-          className="py-2 px-4 bg-red-800 text-white rounded-full drop-shadow-lg text-sm flex items-center hover:bg-red-950 ml-4 mr-4"
+          className="py-2 px-4 bg-red-800 text-white rounded-full drop-shadow-lg text-sm flex items-center hover:bg-red-950 ml-4 mr-4 w-40 justify-center"
         >
           <AddIcon fontSize="small" className="mr-1" />
           Add Entry
@@ -353,7 +353,7 @@ const FormsAdmin: React.FC = () => {
       <div className="form-container2 flex-1 container px-2 py-2 bg-white">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
-            <tr className="bg-red-800 text-white shadow-2xl">
+            <tr className="bg-red-800 text-white ">
               <th className="py-2 px-4 border-b">Form Name</th>
               <th className="py-2 px-4 border-b">Department</th>
               <th className="py-2 px-4 border-b">Agency</th>
@@ -367,7 +367,7 @@ const FormsAdmin: React.FC = () => {
                 <tr
                   key={form.id}
                   onClick={() => handleRowClick(form)}
-                  className="hover:bg-gray-200 cursor-pointer text-center shadow-2xl text-red-900"
+                  className="hover:bg-gray-200 cursor-pointer text-center text-red-900"
                 >
                   <td className="py-2 px-4">{form.form_name}</td>
                   <td className="py-2 px-4">{form.department}</td>

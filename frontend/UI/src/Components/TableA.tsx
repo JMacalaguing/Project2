@@ -115,6 +115,7 @@ const fetchData = async (formId: string) => {
     // Handle checkbox changes
     const handleCheckboxChange = (value: string) => {
       setAppropriationSource(value);
+      setYear(value);
     };
 
 
@@ -178,9 +179,9 @@ const fetchData = async (formId: string) => {
                 <div className="mb-2">PROPRIATION SOURCE (Please check)</div>
                   <div className="flex item-center">
                     <input type="checkbox" id="new-approriation" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
-                     checked={appropriationSource === "New Approriation (Regular Agency Badget)"}
-                     onChange={() => handleCheckboxChange("New Approriation (Regular Agency Badget)")}/>
-                    <label htmlFor="new-approriation" className="mt-[-6px]">New Approriation (Regular Agency Badget)</label>
+                     checked={appropriationSource === "New Appropriation (Regular Agency Budget)"}
+                     onChange={() => handleCheckboxChange("New Appropriation (Regular Agency Budget)")}/>
+                    <label htmlFor="new-approriation" className="mt-[-6px]">New Approriation (Regular Agency Budget)</label>
                   </div> 
                 <div className="flex item-center">
                     <input type="checkbox" id="auto-appropriations"  className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
@@ -195,7 +196,7 @@ const fetchData = async (formId: string) => {
                   </div>
                 <div className="flex item-center">
                     <input type="checkbox" id="other-appropriations" className="w-20 h-5 appearance-none border border-black bg-white mr-1 flex items-center justify-center checked:bg-white checked:before:content-['✔'] checked:before:text-white checked:before:text-lg "
-                     checked={appropriationSource === "Others(New Appropriations Transfers from  SPFs; Supplemental)"} onChange={() => handleCheckboxChange("Others(New Appropriations Transfers from  SPFs; Supplemental)")}/>
+                     checked={appropriationSource === "Others(New Appropriations Transfers from SPFs; Supplemental)"} onChange={() => handleCheckboxChange("Others(New Appropriations Transfers from  SPFs; Supplemental)")}/>
                     <label htmlFor="other-approriation" className="mt-[-6px]">Others(New Appropriations Transfers from  SPFs; Supplemental)</label>
                   </div>
              </div>

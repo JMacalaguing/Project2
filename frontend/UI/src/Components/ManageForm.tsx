@@ -232,7 +232,7 @@ const ManageForm: React.FC = () => {
           style: { width: "500px", maxWidth: "560px" },
         }}
       >
-        <DialogTitle sx={{ textAlign: "center" }}>Add User to Form</DialogTitle>
+        <DialogTitle sx={{ textAlign: "center" , backgroundColor:"rgba(155, 3, 3, 0.8)", color:"white"}}>Add User to Form</DialogTitle>
         {loading ? (
           <div className="flex justify-center p-6">
             <CircularProgress />
