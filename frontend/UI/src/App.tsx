@@ -8,6 +8,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import FormsAdmin from "./Pages/Formlist-Admin";
 import FormsUser from "./Pages/Formlist-User";;
 import ManageForm from "./Components/ManageForm";
+import AssignedUser from "./Components/AssignedUser";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/FormsUser" element={<FormsUser/>} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/Manage-Form/:id" element={<ManageForm />} />
+            <Route path="/AssignedUser/:id" element={<AssignedUser />} />
           </Route>
         </Routes>
       </div>

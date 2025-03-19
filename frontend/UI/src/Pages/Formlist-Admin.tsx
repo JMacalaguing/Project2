@@ -125,13 +125,7 @@ const FormsAdmin: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
 
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
 
   const handleSubmit = async () => {
     // Validate required fields
@@ -218,41 +212,39 @@ const FormsAdmin: React.FC = () => {
     <div className="main-container2">
       <Header />
 
-      <div className="flex items-start justify-between w-full mb-4 pl-10 pr-2">
+      <div className="flex items-start justify-between w-full mb-4 pl-3 pr-2">
         {/* Improved Search Bar */}
-        <div className="relative  w-130"> 
-          <TextField
-            className="w-full"
-            placeholder="Search by form name, department..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            variant="outlined"
-            size="small"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: searchTerm && (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="clear search"
-                    onClick={clearSearch}
-                    edge="end"
-                    size="small"
+        <div className="relative ml-2 w-full md:w-xl mt-2 md:mt-0">
+            <input
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-full pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-red-900 hover:border-slate-300 shadow-sm focus:shadow"
+              placeholder="Search Forms..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button
+              className="absolute top-1 right-1 flex items-center rounded-full bg-red-800 py-1 px-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-red-900 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="button"
+              onClick={() => setSearchTerm("")}
+            >
+              {searchTerm ? "Clear" : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4 mr-2"
                   >
-                    <CloseIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-              className: "rounded-full pr-2",
-              sx: {
-                '& fieldset': { borderRadius: '9999px' },
-              }
-            }}
-          />
-        </div>
+                    <path
+                      fillRule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1 1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Search
+                </>
+              )}
+            </button>
+          </div>
 
         {/* Add Entry Button */}
         <button

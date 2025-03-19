@@ -12,12 +12,14 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import PersonIcon from '@mui/icons-material/Person';
-import { blue, red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import axios from "axios";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import GroupIcon from '@mui/icons-material/Group';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const ManageForm: React.FC = () => {
   const { id } = useParams(); 
@@ -172,8 +174,11 @@ const ManageForm: React.FC = () => {
       <Header />
       <div className="flex flex-col md:flex-row justify-between w-full items-center p-2">
         <div className="flex flex-col md:flex-row items-center">
+        <button onClick={() => navigate(-1)}>
+                <ArrowBackIosIcon className="text-red-800" />
+            </button>
           <div className="font-bold text-red-800 ml-2 text-[24px] p-0">
-            Manage Users {<KeyboardDoubleArrowRightIcon />} <span>{form.form_name}</span>
+            Manage Admin {<KeyboardDoubleArrowRightIcon />} <span>{form.form_name}</span>
           </div>
           <button
             onClick={handleOpen}
@@ -181,9 +186,9 @@ const ManageForm: React.FC = () => {
             disabled={loading}
           >
             {loading ? <CircularProgress size={16} color="inherit" className="mr-1" /> : <AddIcon fontSize="small" className="mr-1" />}
-            Add Users
+            Add Admin
           </button>
-          <div className="relative ml-2 w-full md:w-auto mt-2 md:mt-0">
+          <div className="relative ml-2 w-full md:w-80 mt-2 md:mt-0">
             <input
               className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-full pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-red-900 hover:border-slate-300 shadow-sm focus:shadow"
               placeholder="Search users..."
@@ -214,14 +219,21 @@ const ManageForm: React.FC = () => {
               )}
             </button>
           </div>
-        </div>
-        <button
-          onClick={() => navigate("/dashboard", { state: { formId: form.id } })}
-          className="py-2 px-4 bg-red-800 text-white ml-2 mr-4 rounded-full drop-shadow-lg mb-2 text-sm flex items-center hover:bg-red-950 mt-2 md:mt-0"
-        >
-          <KeyboardDoubleArrowRightIcon fontSize="small" className="mr-1" />
-          Go to Dashboard
-        </button>
+                <button
+                onClick={() => navigate(`/AssignedUser/${form.id}`, { state: { form } })}
+                className="py-3 px-6 bg-red-800 text-white ml-12 mr-4 rounded-full drop-shadow-lg mb-2 text-sm flex items-center hover:bg-red-950 mt-2 "
+              >
+                <GroupIcon fontSize="small" className="mr-1" />
+                Assigned Modules
+              </button>
+              </div>
+              <button
+                onClick={() => navigate("/dashboard", { state: { formId: form.id } })}
+                className="py-4 px-4 bg-red-800 text-white ml-2 mr-4 rounded-full drop-shadow-lg mb-2 text-sm flex items-center hover:bg-red-950 mt-2 "
+              >
+                <KeyboardDoubleArrowRightIcon fontSize="small" className="mr-1" />
+                Go to Dashboard
+              </button>
       </div>
       
       {/* Users Dialog */}
@@ -285,7 +297,7 @@ const ManageForm: React.FC = () => {
           <>
             {filteredAllowedUsers.length === 0 ? (
               <div className="text-center p-4 border border-gray-300 rounded">
-                {searchTerm ? "No users match your search" : "No users have been added to this form yet"}
+                {searchTerm ? "No users match your search" : "No admin have been added to this form yet"}
               </div>
             ) : (
               <div className="overflow-x-auto">
